@@ -37,6 +37,12 @@ function App() {
           path="/dashboard"
           element={user ? <Dashboard user={user} /> : <Navigate to="/sign-in" />}
         />
+        <Route path="/bookings" element={user ? <MyBookingsPage /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/bookings/:id" element={user ? <BookingDetailsPage /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/bookings/:id/edit" element={user ? <EditBookingPage /> : <Navigate to="/sign-in" />}
+        />
       </Routes>
     </div>
   );

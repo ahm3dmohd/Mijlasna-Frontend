@@ -5,6 +5,7 @@ import SignupPage from "./pages/SignupPage";
 import Homepage from "./pages/Homepage";
 import SignInPage from "./pages/SigninPage";
 import Dashboard from "./pages/Dashboard";
+import VenuesPage from "./pages/VenuesPage";
 import { logout } from "./services/authService";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/sign-in" element={<SignInPage setUser={setUser} />} />
+        <Route path="/venues" element={<VenuesPage />} />
         <Route
           path="/dashboard"
           element={user ? <Dashboard user={user} /> : <Navigate to="/sign-in" />}

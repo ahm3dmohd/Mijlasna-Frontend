@@ -7,12 +7,15 @@ function Signup() {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
+    phone: "",
     password: "",
     passwordConf: "",
+    role: "customer",
   });
   const [ submitting, setSubmitting ] = useState(false)
 
-  const { username, password, passwordConf } = formData;
+  const { username, email, phone, password, passwordConf, role } = formData;
 
   function handleChange(event){
     setError("");
@@ -34,7 +37,7 @@ function Signup() {
   }
 
   function isFormInvalid(){
-    return !(username && password && password === passwordConf);
+    return !(username && email && phone && password && password === passwordConf);
   };
 
   return (
@@ -52,6 +55,35 @@ function Signup() {
             onChange={handleChange}
             required
           />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            name="email"
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="phone">Phone:</label>
+          <input
+            type="tel"
+            id="phone"
+            value={phone}
+            name="phone"
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="role">I am a:</label>
+          <select id="role" value={role} name="role" onChange={handleChange}>
+            <option value="customer">Customer</option>
+            <option value="owner">Venue owner</option>
+          </select>
         </div>
         <div>
           <label htmlFor="password">Password:</label>

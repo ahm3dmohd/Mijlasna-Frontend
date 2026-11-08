@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllBookings } from "../services/bookingService";
+import { getAllBookings } from "../../services/bookingService";
 
 function MyBookingsPage() {
 

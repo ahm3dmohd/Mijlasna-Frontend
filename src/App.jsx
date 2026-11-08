@@ -7,6 +7,9 @@ import SignInPage from "./pages/SigninPage";
 import Dashboard from "./pages/Dashboard";
 import VenuesPage from "./pages/VenuesPage";
 import { logout } from "./services/authService";
+import MyBookingsPage from "./pages/bookings/MyBookingsPage";
+import BookingDetailsPage from "./pages/bookings/BookingDetailsPage";
+import EditBookingPage from "./pages/bookings/EditBookingPage";
 
 function App() {
   function  getUserFromToken (){

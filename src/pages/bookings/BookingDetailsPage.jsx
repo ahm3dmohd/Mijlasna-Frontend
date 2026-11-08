@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBookingById, deleteBooking } from "../services/bookingService";
+import { getBookingById, deleteBooking, checkoutBooking } from "../services/bookingService";
 
 function BookingDetailsPage() {
     
@@ -20,6 +20,15 @@ function BookingDetailsPage() {
   useEffect(() => {
     getBooking();
   }, [id]);
+
+  async function handleCheckout() {
+    try {
+      const res = await checkoutBooking(id);
+      setBooking(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   async function handleDelete() {
     try {
@@ -45,6 +54,7 @@ function BookingDetailsPage() {
 
       <h2>{booking.venue ? booking.venue.name : "Venue"}</h2>
       <p>Date: {new Date(booking.date).toLocaleDateString()}</p>
+      <p>Time of Day: {booking.timeOfDay}</p>
       <p>Total Price: {booking.totalPrice}</p>
       <p>Status: {booking.status}</p>
       <p>Payment Status: {booking.paymentStatus ? "Paid" : "Pending"}</p>

@@ -27,6 +27,7 @@ function MyBookingsPage() {
             <li key={oneBooking._id}>
               <h2>{oneBooking.venue ? oneBooking.venue.name : "Venue"}</h2>
               <p>Date: {new Date(oneBooking.date).toLocaleDateString()}</p>
+              <p>Time of Day: {oneBooking.timeOfDay}</p>
               <p>Total Price: {oneBooking.totalPrice}</p>
             </li>
           ))}

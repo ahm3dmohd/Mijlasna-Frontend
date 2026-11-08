@@ -6,6 +6,13 @@ async function getAllVenues() {
     return response.data
 }
 
+
+async function createVenue(formData) {
+    const response = await api.create('/venues',formData)
+    return response.data
+}
+
 export {
-    getAllVenues
+    getAllVenues,
+    createVenue
 }

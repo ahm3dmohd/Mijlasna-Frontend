@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getBookingById, updateBooking } from "../services/bookingService";
+import { useParams, useNavigate } from "react-router";
+import { getBookingById, updateBooking } from "../../services/bookingService";
 
 function EditBookingPage() {
   const { id } = useParams();

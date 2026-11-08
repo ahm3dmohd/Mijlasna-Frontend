@@ -14,6 +14,11 @@ export async function getAllBookings() {
   return res.data;
 }
 
+export async function createBooking(formdata) {
+  const res = await axios.post(BASE_URL,formdata, getAuthConfig());
+  return res.data;
+}
+
 export async function getBookingById(id) {
   const res = await axios.get(`${BASE_URL}/${id}`, getAuthConfig());
   return res.data;

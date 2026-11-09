@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getAllBookings } from "../services/bookingService";
+import { getAllBookings } from "../../services/bookingService";
 import { Link } from "react-router";
+
 function MyBookingsPage() {
 
   const [bookings, setBookings] = useState([]);
@@ -17,7 +18,7 @@ function MyBookingsPage() {
   return (
     <div>
 
-      <h1>My Bookings</h1>
+      <h1>My Bookings Page</h1>
 
       {bookings.length === 0 ? (
         <p>No bookings made yet</p>

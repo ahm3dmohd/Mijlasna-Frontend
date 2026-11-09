@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getBookingById, deleteBooking, checkoutBooking } from "../services/bookingService";
+import { useParams, useNavigate } from "react-router";
+import { getBookingById, deleteBooking, checkoutBooking } from "../../services/bookingService";
 
 function BookingDetailsPage() {
     

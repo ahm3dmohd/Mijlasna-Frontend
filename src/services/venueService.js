@@ -1,12 +1,11 @@
 import api from './api'
 
-// GET /venues - every venue (public, no login needed)
 async function getAllVenues() {
     const response = await api.get('/venues')
     return response.data
 }
 
-async function getAllVenues(id) {
+async function getVenueById(id) {
     const response = await api.get(`/venues/${id}`)
     return response.data
 }
@@ -21,8 +20,17 @@ async function editVenue(id,formData) {
     return response.data
 }
 
+async function deleteVenue(id) {
+    const response = await api.delete(`/venues/${id}`)
+    return response.data
+}
+
+
+
 export {
     getAllVenues,
     createVenue,
-    editVenue
+    editVenue,
+    getVenueById,
+    deleteVenue
 }

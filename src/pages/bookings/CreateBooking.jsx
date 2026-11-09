@@ -38,10 +38,10 @@ function CreateBooking() {
                 />
 
                 <label htmlFor="timeOfDay">Time Of Day: </label>
-                <select id="country" name="user_country" required>
+                <select id="timeOfDay" name="timeOfDay" required>
                     <option value="" disabled selected>Choose Timing...</option>
-                    <option value="Evening 7 to 12">Evening 7 to 12</option>
                     <option value="Morning 7 to 12">Morning 7 to 12</option>
+                    <option value="Evening 7 to 12">Evening 7 to 12</option>
                 </select>
 
                 <label htmlFor="notes">Notes:</label>

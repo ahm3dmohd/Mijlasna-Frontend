@@ -19,6 +19,11 @@ export async function createBooking(formdata) {
   return res.data;
 }
 
+export async function ownerGetBookings() {
+  const res = await axios.get(`${BASE_URL}/owner`, getAuthConfig());
+  return res.data;
+}
+
 export async function getBookingById(id) {
   const res = await axios.get(`${BASE_URL}/${id}`, getAuthConfig());
   return res.data;

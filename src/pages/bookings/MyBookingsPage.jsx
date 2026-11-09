@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllBookings } from "../../services/bookingService";
+import { Link } from "react-router";
 
 function MyBookingsPage() {
 
@@ -29,6 +30,7 @@ function MyBookingsPage() {
               <p>Date: {new Date(oneBooking.date).toLocaleDateString()}</p>
               <p>Time of Day: {oneBooking.timeOfDay}</p>
               <p>Total Price: {oneBooking.totalPrice}</p>
+              <Link to={`/bookings/${oneBooking._id}`} >See Details</Link>
             </li>
           ))}
         </ol>

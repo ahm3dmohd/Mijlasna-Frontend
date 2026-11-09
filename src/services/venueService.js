@@ -6,13 +6,23 @@ async function getAllVenues() {
     return response.data
 }
 
+async function getAllVenues(id) {
+    const response = await api.get(`/venues/${id}`)
+    return response.data
+}
 
 async function createVenue(formData) {
-    const response = await api.create('/venues',formData)
+    const response = await api.post('/venues',formData)
+    return response.data
+}
+
+async function editVenue(id,formData) {
+    const response = await api.put(`/venues/${id}`,formData)
     return response.data
 }
 
 export {
     getAllVenues,
-    createVenue
+    createVenue,
+    editVenue
 }

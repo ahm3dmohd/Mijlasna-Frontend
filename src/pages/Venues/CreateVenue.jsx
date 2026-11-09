@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { createVenue } from '../../services/venueService';
+import {useNavigate} from 'react-router'
 
 function CreateVenue() {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ function CreateVenue() {
     async function handleSubmit(e) {
         e.preventDefault();
         const res = await createVenue(formData);
-        navigate("/bookings");
+        navigate("/venues");
     }
 
     return (

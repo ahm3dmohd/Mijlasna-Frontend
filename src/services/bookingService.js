@@ -1,50 +1,42 @@
-import axios from 'axios';
-
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/bookings`;
-
-function getAuthConfig() {
-  const token = localStorage.getItem('token');
-  return {
-    headers: { Authorization: `Bearer ${token}` }
-  };
-}
+import api from './api';
 
 export async function getAllBookings() {
-  const res = await axios.get(BASE_URL, getAuthConfig());
+  const res = await api.get('/bookings');
   return res.data;
 }
 
-export async function createBooking(formdata) {
-  const res = await axios.post(BASE_URL,formdata, getAuthConfig());
+// The backend creates bookings on the venue route: POST /venues/:id/booking
+export async function createBooking(venueId, formData) {
+  const res = await api.post(`/venues/${venueId}/booking`, formData);
   return res.data;
 }
 
 export async function ownerGetBookings() {
-  const res = await axios.get(`${BASE_URL}/owner`, getAuthConfig());
+  const res = await api.get('/bookings/owner');
   return res.data;
 }
 
 export async function getBookingById(id) {
-  const res = await axios.get(`${BASE_URL}/${id}`, getAuthConfig());
+  const res = await api.get(`/bookings/${id}`);
   return res.data;
 }
 
 export async function updateBooking(id, formData) {
-  const res = await axios.put(`${BASE_URL}/${id}`, formData, getAuthConfig());
+  const res = await api.put(`/bookings/${id}`, formData);
   return res.data;
 }
 
 export async function updateBookingStatus(id, status) {
-  const res = await axios.put(`${BASE_URL}/${id}/status`, { status }, getAuthConfig());
+  const res = await api.put(`/bookings/${id}/status`, { status });
   return res.data;
 }
 
 export async function checkoutBooking(id) {
-  const res = await axios.post(`${BASE_URL}/${id}/checkout`, {}, getAuthConfig());
+  const res = await api.post(`/bookings/${id}/checkout`);
   return res.data;
 }
 
 export async function deleteBooking(id) {
-  const res = await axios.delete(`${BASE_URL}/${id}`, getAuthConfig());
+  const res = await api.delete(`/bookings/${id}`);
   return res.data;
 }

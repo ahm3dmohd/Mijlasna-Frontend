@@ -20,6 +20,10 @@ import EditBookingPage from "./pages/bookings/EditBookingPage";
 import ManageUsersPage from "./pages/Admin/ManageUsersPage";
 import UserDetailsPage from "./pages/Admin/UserDetailsPage";
 import EditUserPage from "./pages/Admin/EditUserPage";
+import CreateBooking from "./pages/bookings/CreateBooking"
+import OwnerVenuesBooking from "./pages/bookings/OwnerVenuesBooking"
+
+
 
 // read the user from the saved token (outside App so it only runs when called)
 function getUserFromToken() {

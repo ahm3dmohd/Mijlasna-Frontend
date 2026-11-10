@@ -1,18 +1,37 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router';
-import axios from 'axios';
+import { getMe, deleteMe } from '../services/userService';
 
-function MyProfile() {
-    const navigate = useNavigate()
-    const handleDelete = async () => {
+function MyProfile({ handleLogout }) {
+  const navigate = useNavigate()
+  const [user, setUser] = useState(null)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const foundUser = await getMe()
+        setUser(foundUser)
+      } catch (err) {
+        setError(err?.response?.data?.message || "Failed to load profile.")
+      }
+    }
+    loadUser()
+  }, [])
+
+  const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete your account?")) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_BACK_END_SERVER_URL}/me`);
-      navigate('/') 
+      await deleteMe();
+      handleLogout()
+      navigate('/')
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to delete account.");
+      setError(err?.response?.data?.message || "Failed to delete account.");
     }
   };
+
+  if (error) return <p className='error'>{error}</p>
+  if (!user) return <p>Loading...</p>
 
   return (
     <div>

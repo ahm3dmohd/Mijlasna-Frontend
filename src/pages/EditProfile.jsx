@@ -1,15 +1,32 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import axios from 'axios';
+import { getMe, updateMe } from '../services/userService';
 
 function EditProfile() {
     const [formData, setFormData] = useState({
-        username: user.username,
-        email: user.email,
-        phone: user.phone
+        username: '',
+        email: '',
+        phone: ''
     });
+    const [error, setError] = useState('')
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const user = await getMe()
+                setFormData({
+                    username: user.username,
+                    email: user.email,
+                    phone: user.phone
+                })
+            } catch (err) {
+                setError(err?.response?.data?.message || "Failed to load profile.")
+            }
+        }
+        loadUser()
+    }, [])
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,10 +35,10 @@ function EditProfile() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.put(`${import.meta.env.VITE_BACK_END_SERVER_URL}/me`, formData);
+            await updateMe(formData);
             navigate('/me')
         } catch (err) {
-            setError(err.response?.data?.message || "Failed to update profile.");
+            setError(err?.response?.data?.message || "Failed to update profile.");
 
         }
     }
@@ -29,6 +46,7 @@ function EditProfile() {
     return (
         <div>
             <h2>Edit Profile</h2>
+            <p className='error'>{error}</p>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username:</label>

@@ -75,7 +75,7 @@ function EditBookingPage() {
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className='actions'>
           <button type='submit'>Save Changes</button>
           <Link to={`/bookings/${id}`}>Cancel</Link>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import { getUserById, updateUser } from "../../services/userService";
 
 
@@ -14,18 +14,22 @@ function EditUserPage() {
     phone: "",
     role: "customer"
   });
-
-  async function getUser() {
-    const res = await getUserById(id);
-    setFormData({
-      username: res.username || "",
-      email: res.email || "",
-      phone: res.phone || "",
-      role: res.role || "customer"
-    });
-  }
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    async function getUser() {
+      try {
+        const res = await getUserById(id);
+        setFormData({
+          username: res.username || "",
+          email: res.email || "",
+          phone: res.phone || "",
+          role: res.role || "customer"
+        });
+      } catch (err) {
+        setError(err?.response?.data?.message || "Failed to load user.");
+      }
+    }
     getUser();
   }, [id]);
 
@@ -35,8 +39,12 @@ function EditUserPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await updateUser(id, formData);
-    navigate("/users/" + res._id);
+    try {
+      const res = await updateUser(id, formData);
+      navigate("/users/" + res._id);
+    } catch (err) {
+      setError(err?.response?.data?.message || "Failed to update user.");
+    }
   }
 
 
@@ -44,6 +52,7 @@ function EditUserPage() {
     <div>
 
     <h1>Edit User</h1>
+    <p className="error">{error}</p>
 
       <form onSubmit={handleSubmit}>
 

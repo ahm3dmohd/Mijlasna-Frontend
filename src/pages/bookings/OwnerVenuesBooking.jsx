@@ -1,23 +1,29 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router'
 import { ownerGetBookings } from '../../services/bookingService';
 function OwnerVenuesBooking() {
- 
+
    const [bookings, setBookings] = useState([]);
- 
-   async function getBookings() {
-     const res = await ownerGetBookings();
-     setBookings(res);
-   }
-  
+   const [error, setError] = useState("");
+
    useEffect(() => {
+     async function getBookings() {
+       try {
+         const res = await ownerGetBookings();
+         setBookings(res);
+       } catch (err) {
+         setError(err?.response?.data?.message || "Failed to load bookings.");
+       }
+     }
      getBookings();
    }, []);
- 
+
    return (
      <div>
- 
+
        <h1>Owner Bookings</h1>
- 
+       <p className="error">{error}</p>
+
        {bookings.length === 0 ? (
          <p>No bookings made yet</p>
        ) : (
@@ -33,7 +39,7 @@ function OwnerVenuesBooking() {
            ))}
          </ol>
        )}
- 
+
      </div>
    );
  }

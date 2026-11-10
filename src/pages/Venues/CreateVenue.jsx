@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { createVenue } from '../../services/venueService';
 import {useNavigate} from 'react-router'
 
@@ -15,6 +14,7 @@ function CreateVenue() {
             weekendPrice: "",
             weekDayPrice: "",
     });
+    const [error, setError] = useState("");
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,13 +22,18 @@ function CreateVenue() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const res = await createVenue(formData);
-        navigate("/venues");
+        try {
+            await createVenue(formData);
+            navigate("/venues");
+        } catch (err) {
+            setError(err?.response?.data?.message || "Failed to create venue.");
+        }
     }
 
     return (
         <div>
             <h1>Create Venue</h1>
+            <p className="error">{error}</p>
 
             <form onSubmit={handleSubmit}>
 
@@ -43,8 +48,8 @@ function CreateVenue() {
                 />
 
                 <label htmlFor="type">Type: </label>
-                <select id="type" name="type" required>
-                    <option value="" disabled selected>Choose Type...</option>
+                <select id="type" name="type" onChange={handleChange} value={formData.type} required>
+                    <option value="" disabled>Choose Type...</option>
                     <option value="Mijlas">Mijlas</option>
                     <option value="Pool House">Pool House</option>
                     <option value="Hall">Hall</option>

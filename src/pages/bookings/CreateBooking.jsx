@@ -1,5 +1,5 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
 import { createBooking } from '../../services/bookingService';
 
 function CreateBooking() {
@@ -11,6 +11,7 @@ function CreateBooking() {
         timeOfDay: "",
         notes: ""
     });
+    const [error, setError] = useState("");
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,13 +19,18 @@ function CreateBooking() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const res = await createBooking(formData);
-        navigate("/bookings");
+        try {
+            await createBooking(id, formData);
+            navigate("/bookings");
+        } catch (err) {
+            setError(err?.response?.data?.message || "Failed to create booking.");
+        }
     }
 
     return (
         <div>
             <h1>Create Booking</h1>
+            <p className="error">{error}</p>
 
             <form onSubmit={handleSubmit}>
 
@@ -35,11 +41,12 @@ function CreateBooking() {
                     id="date"
                     onChange={handleChange}
                     value={formData.date}
+                    required
                 />
 
                 <label htmlFor="timeOfDay">Time Of Day: </label>
-                <select id="timeOfDay" name="timeOfDay" required>
-                    <option value="" disabled selected>Choose Timing...</option>
+                <select id="timeOfDay" name="timeOfDay" onChange={handleChange} value={formData.timeOfDay} required>
+                    <option value="" disabled>Choose Timing...</option>
                     <option value="Morning 7 to 12">Morning 7 to 12</option>
                     <option value="Evening 7 to 12">Evening 7 to 12</option>
                 </select>
@@ -52,7 +59,7 @@ function CreateBooking() {
                     value={formData.notes}
                 ></textarea>
 
-                <button type="submit">Update Booking</button>
+                <button type="submit">Book Venue</button>
 
             </form>
 

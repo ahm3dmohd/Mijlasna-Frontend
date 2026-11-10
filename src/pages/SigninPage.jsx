@@ -1,7 +1,7 @@
 // src/components/SignInForm/SignInForm.jsx
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { signIn } from '../services/authService';
 
@@ -31,7 +31,7 @@ const SignInForm = ({ setUser }) => {
   };
 
   return (
-    <main>
+    <main className='auth'>
       <h1>Sign In</h1>
       <p className='error'>{error}</p>
       <form autoComplete='off' onSubmit={handleSubmit}>
@@ -59,11 +59,12 @@ const SignInForm = ({ setUser }) => {
             required
           />
         </div>
-        <div>
+        <div className='actions'>
           <button>Sign In</button>
-          <button type='button' onClick={() => navigate('/')}>Cancel</button>
+          <button type='button' className='btn-secondary' onClick={() => navigate('/')}>Cancel</button>
         </div>
       </form>
+      <p className='auth-note'>No account yet? <Link to='/sign-up'>Sign up</Link></p>
     </main>
   );
 };

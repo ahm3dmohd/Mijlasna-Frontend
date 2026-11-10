@@ -48,21 +48,43 @@ function BookingDetailsPage() {
       <h1>Booking Details</h1>
       <p className='error'>{error}</p>
 
-      <p><strong>Venue:</strong> {booking.venue ? booking.venue.name : 'Deleted venue'}</p>
-      <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
-      <p><strong>Time:</strong> {booking.timeOfDay}</p>
-      <p><strong>Total price:</strong> {booking.totalPrice} BD</p>
-      <p><strong>Status:</strong> {booking.status}</p>
-      <p><strong>Deposit paid:</strong> {booking.deposit ? 'Yes' : 'No'}</p>
-      <p><strong>Notes:</strong> {booking.notes || 'No notes'}</p>
+      <div className='card details'>
+        <div className='card-head'>
+          <h2>{booking.venue ? booking.venue.name : 'Deleted venue'}</h2>
+          <span className={`badge status-${booking.status}`}>{booking.status}</span>
+        </div>
 
-      <div>
-        <Link to={`/bookings/${booking._id}/edit`}>Edit</Link>
-        {(booking.status === 'pending' || booking.status === 'confirmed') && (
-          <button onClick={handleCancel}>Cancel Booking</button>
-        )}
-        <button onClick={handleDelete}>Delete</button>
-        <Link to='/bookings'>Back</Link>
+        <dl className='detail-list'>
+          <div>
+            <dt>Date</dt>
+            <dd>{new Date(booking.date).toLocaleDateString()}</dd>
+          </div>
+          <div>
+            <dt>Time</dt>
+            <dd>{booking.timeOfDay}</dd>
+          </div>
+          <div>
+            <dt>Total price</dt>
+            <dd>{booking.totalPrice} BD</dd>
+          </div>
+          <div>
+            <dt>Deposit paid</dt>
+            <dd>{booking.deposit ? 'Yes' : 'No'}</dd>
+          </div>
+          <div>
+            <dt>Notes</dt>
+            <dd>{booking.notes || 'No notes'}</dd>
+          </div>
+        </dl>
+
+        <div className='actions'>
+          <Link to={`/bookings/${booking._id}/edit`}>Edit</Link>
+          {(booking.status === 'pending' || booking.status === 'confirmed') && (
+            <button onClick={handleCancel}>Cancel Booking</button>
+          )}
+          <button className='btn-danger' onClick={handleDelete}>Delete</button>
+          <Link to='/bookings'>Back</Link>
+        </div>
       </div>
     </main>
   )

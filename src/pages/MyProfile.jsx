@@ -34,19 +34,42 @@ function MyProfile({ handleLogout }) {
   if (!user) return <p>Loading...</p>
 
   return (
-    <div>
-      <h2>User Profile</h2>
-      <p><strong>Username:</strong> {user.username}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Phone:</strong> {user.phone}</p>
+    <main>
+      <h1>User Profile</h1>
 
-      <div>
-        <Link to="/me/edit">Edit</Link>
-        <button onClick={handleDelete}>
-          Delete Account
-        </button>
+      <div className='card details'>
+        <div className='profile-head'>
+          {/* the first letter of the username in a circle */}
+          <div className='avatar' aria-hidden='true'>{user.username.charAt(0).toUpperCase()}</div>
+          <div>
+            <h2>{user.username}</h2>
+            <span className='badge'>{user.role}</span>
+          </div>
+        </div>
+
+        <dl className='detail-list'>
+          <div>
+            <dt>Username</dt>
+            <dd>{user.username}</dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd>{user.email}</dd>
+          </div>
+          <div>
+            <dt>Phone</dt>
+            <dd>{user.phone}</dd>
+          </div>
+        </dl>
+
+        <div className='actions'>
+          <Link to="/me/edit">Edit</Link>
+          <button className='btn-danger' onClick={handleDelete}>
+            Delete Account
+          </button>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
 

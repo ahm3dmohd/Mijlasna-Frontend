@@ -1,0 +1,254 @@
+/* Cards: venues list, bookings list, booking details and profile */
+
+/* A page title with a button on the same row */
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  margin-bottom: 24px;
+}
+
+.page-head h1 {
+  margin-bottom: 0;
+}
+
+/* The grid that holds the cards: 3 in a row on computers, 1 on phones */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 24px 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* sadu band along the top of every card */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image: var(--sadu-teeth);
+  background-size: 16px 8px;
+}
+
+/* cards in a list lift a little when the mouse is on them */
+.card-grid .card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+.card p {
+  margin: 4px 0;
+}
+
+/* space between the text and whatever is pinned to the bottom */
+.card > p:last-of-type {
+  margin-bottom: 18px;
+}
+
+.card strong {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* the title and badge at the top of a card */
+.card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.card-head h2 {
+  margin: 0;
+}
+
+/* the link or button at the bottom of a card */
+.card .card-link {
+  align-self: flex-start;
+  margin-top: auto;
+  min-height: 42px;
+  padding: 0 18px;
+}
+
+/* ---------- Badges ---------- */
+
+/* small rounded label, like the venue type or the booking status */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background-color: var(--cream-deep);
+  color: var(--brown);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+/* one color for each booking status */
+.status-pending {
+  background-color: #f4e3bf;
+  color: #6b4a0f;
+}
+
+.status-confirmed {
+  background-color: #dcebd6;
+  color: #2c5527;
+}
+
+.status-rejected,
+.status-cancelled {
+  background-color: #f3d9d6;
+  color: #7a1219;
+}
+
+.status-completed {
+  background-color: #e6d6c8;
+  color: #4a2a1c;
+}
+
+/* ---------- Venue card ---------- */
+
+/* weekday and weekend prices next to each other */
+.price-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  /* auto pushes the prices to the bottom, so all cards line up */
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+}
+
+.price-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.price {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--red);
+}
+
+/* ---------- Details and profile pages ---------- */
+
+/* a single big card */
+.details {
+  max-width: 640px;
+}
+
+/* a list of "label: value" rows */
+.detail-list {
+  margin: 8px 0 0;
+}
+
+.detail-list div {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.detail-list div:last-child {
+  border-bottom: none;
+}
+
+.detail-list dt {
+  color: var(--muted);
+}
+
+.detail-list dd {
+  margin: 0;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* the round letter at the top of the profile */
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  background-color: var(--red);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.profile-head h2 {
+  margin: 0;
+}
+
+/* ---------- Numbered lists (owner bookings, manage users) ---------- */
+
+.container ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.container ol li {
+  padding: 22px 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 6px solid var(--red);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.container ol li p {
+  margin: 4px 0;
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 600px) {
+  .card {
+    padding: 28px 18px 20px;
+  }
+
+  .detail-list div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .card .card-link {
+    align-self: stretch;
+  }
+}

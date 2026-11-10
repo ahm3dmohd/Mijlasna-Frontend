@@ -1,43 +1,45 @@
-import { useEffect, useState } from "react";
-import { getAllBookings } from "../../services/bookingService";
-import { Link } from "react-router";
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router'
+import { getAllBookings } from '../../services/bookingService'
 
 function MyBookingsPage() {
+  const [bookings, setBookings] = useState([])
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
 
-  const [bookings, setBookings] = useState([]);
-
-  async function getBookings() {
-    const res = await getAllBookings();
-    setBookings(res);
-  }
- 
   useEffect(() => {
-    getBookings();
-  }, []);
+    async function loadBookings() {
+      try {
+        const allBookings = await getAllBookings()
+        setBookings(allBookings)
+      } catch (err) {
+        setError(err?.response?.data?.message || 'Failed to load bookings.')
+      }
+      setLoading(false)
+    }
+    loadBookings()
+  }, [])
+
+  if (loading) return <p>Loading...</p>
 
   return (
-    <div>
+    <main>
+      <h1>My Bookings</h1>
+      <p className='error'>{error}</p>
 
-      <h1>My Bookings Page</h1>
+      {bookings.length === 0 && !error && <p>You have no bookings yet.</p>}
 
-      {bookings.length === 0 ? (
-        <p>No bookings made yet</p>
-      ) : (
-        <ol>
-          {bookings.map((oneBooking) => (
-            <li key={oneBooking._id}>
-              <h2>{oneBooking.venue ? oneBooking.venue.name : "Venue"}</h2>
-              <p>Date: {new Date(oneBooking.date).toLocaleDateString()}</p>
-              <p>Time of Day: {oneBooking.timeOfDay}</p>
-              <p>Total Price: {oneBooking.totalPrice}</p>
-              <Link to={`/bookings/${oneBooking._id}`} >See Details</Link>
-            </li>
-          ))}
-        </ol>
-      )}
-
-    </div>
-  );
+      {bookings.map((booking) => (
+        <div key={booking._id}>
+          <h2>{booking.venue ? booking.venue.name : 'Deleted venue'}</h2>
+          <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
+          <p><strong>Time:</strong> {booking.timeOfDay}</p>
+          <p><strong>Status:</strong> {booking.status}</p>
+          <Link to={`/bookings/${booking._id}`}>View Details</Link>
+        </div>
+      ))}
+    </main>
+  )
 }
 
-export default MyBookingsPage;
+export default MyBookingsPage

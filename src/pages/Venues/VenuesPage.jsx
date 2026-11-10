@@ -1,53 +1,45 @@
-import { useEffect, useState } from "react";
-import { getAllVenues } from "../services/venueService";
+import { useEffect, useState } from 'react'
+import { getAllVenues } from '../../services/venueService'
 
 function VenuesPage() {
-  const [venues, setVenues] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [venues, setVenues] = useState([])
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
 
-  // Fetch the venues once, when the page opens
   useEffect(() => {
-    async function fetchVenues() {
+    async function loadVenues() {
       try {
-        const data = await getAllVenues();
-        setVenues(data);
+        const allVenues = await getAllVenues()
+        setVenues(allVenues)
       } catch (err) {
-        setError(err.response?.data?.message || "Could not load venues.");
-      } finally {
-        setLoading(false);
+        setError(err?.response?.data?.message || 'Failed to load venues.')
       }
+      setLoading(false)
     }
-    fetchVenues();
-  }, []);
+    loadVenues()
+  }, [])
 
-  if (loading) return <p>Loading venues...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (loading) return <p>Loading...</p>
 
   return (
     <main>
       <h1>Venues</h1>
+      <p className='error'>{error}</p>
 
-      {venues.length === 0 ? (
-        <p>No venues yet.</p>
-      ) : (
-        <ul>
-          {venues.map((venue) => (
-            <li key={venue._id}>
-              <h2>{venue.name}</h2>
-              {venue.images && <img src={venue.images} alt={venue.name} width="200" />}
-              <p>Type: {venue.type}</p>
-              <p>Address: {venue.address}</p>
-              <p>Capacity: {venue.capacity}</p>
-              <p>Weekday price: {venue.weekDayPrice} BD</p>
-              <p>Weekend price: {venue.weekendPrice} BD</p>
-              {venue.description && <p>{venue.description}</p>}
-            </li>
-          ))}
-        </ul>
-      )}
+      {venues.length === 0 && !error && <p>No venues yet.</p>}
+
+      {venues.map((venue) => (
+        <div key={venue._id}>
+          <h2>{venue.name}</h2>
+          <p><strong>Type:</strong> {venue.type}</p>
+          <p><strong>Address:</strong> {venue.address}</p>
+          <p><strong>Capacity:</strong> {venue.capacity}</p>
+          <p><strong>Weekday price:</strong> {venue.weekDayPrice} BD</p>
+          <p><strong>Weekend price:</strong> {venue.weekendPrice} BD</p>
+        </div>
+      ))}
     </main>
-  );
+  )
 }
 
-export default VenuesPage;
+export default VenuesPage

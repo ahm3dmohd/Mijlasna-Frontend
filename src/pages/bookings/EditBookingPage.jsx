@@ -1,82 +1,87 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
-import { getBookingById, updateBooking } from "../../services/bookingService";
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router'
+import { getBookingById, updateBooking } from '../../services/bookingService'
 
 function EditBookingPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
-        date: "",
-        timeOfDay: "",
-        notes: ""
-      });
-
-  async function getBooking() {
-    const res = await getBookingById(id);
-    setFormData({
-      date: res.date ? res.date.split("T")[0] : "",
-      timeOfDay: res.timeOfDay || "",
-      notes: res.notes || ""
-    });
-  }
+    date: '',
+    timeOfDay: 'Morning 7 to 12',
+    notes: '',
+  })
 
   useEffect(() => {
-    getBooking();
-  }, [id]);
+    async function loadBooking() {
+      try {
+        const booking = await getBookingById(id)
+        setFormData({
+          // the date input needs the format YYYY-MM-DD
+          date: booking.date.slice(0, 10),
+          timeOfDay: booking.timeOfDay,
+          notes: booking.notes || '',
+        })
+      } catch (err) {
+        setError(err?.response?.data?.message || 'Failed to load booking.')
+      }
+    }
+    loadBooking()
+  }, [id])
 
-  function handleChange(e) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  function handleChange(event) {
+    setFormData({ ...formData, [event.target.name]: event.target.value })
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const res = await updateBooking(id, formData);
-    navigate("/bookings/" + res._id);
+  async function handleSubmit(event) {
+    event.preventDefault()
+    try {
+      await updateBooking(id, formData)
+      navigate(`/bookings/${id}`)
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Failed to update booking.')
+    }
   }
 
   return (
-    <div>
-
+    <main>
       <h1>Edit Booking</h1>
-
+      <p className='error'>{error}</p>
       <form onSubmit={handleSubmit}>
-
-        <label htmlFor="date">Date:</label>
-        <input
-          type="date"
-          name="date"
-          id="date"
-          onChange={handleChange}
-          value={formData.date}
-        />
-
-        <label htmlFor="timeOfDay">Time of Day:</label>
-        <select
-          name="timeOfDay"
-          id="timeOfDay"
-          onChange={handleChange}
-          value={formData.timeOfDay}
-        >
-          <option value="">Select Time of Day</option>
-          <option value="Morning 7 to 12">Morning 7 to 12</option>
-          <option value="Evening 7 to 12">Evening 7 to 12</option>
-        </select>
-
-        <label htmlFor="notes">Notes:</label>
-        <textarea
-          name="notes"
-          id="notes"
-          onChange={handleChange}
-          value={formData.notes}
-        ></textarea>
-
-        <button type="submit">Update Booking</button>
-
+        <div>
+          <label htmlFor='date'>Date:</label>
+          <input
+            type='date'
+            id='date'
+            value={formData.date}
+            name='date'
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor='timeOfDay'>Time:</label>
+          <select id='timeOfDay' value={formData.timeOfDay} name='timeOfDay' onChange={handleChange}>
+            <option value='Morning 7 to 12'>Morning 7 to 12</option>
+            <option value='Evening 7 to 12'>Evening 7 to 12</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor='notes'>Notes:</label>
+          <textarea
+            id='notes'
+            value={formData.notes}
+            name='notes'
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <button type='submit'>Save Changes</button>
+          <Link to={`/bookings/${id}`}>Cancel</Link>
+        </div>
       </form>
-
-    </div>
-  );
+    </main>
+  )
 }
 
-export default EditBookingPage;
+export default EditBookingPage

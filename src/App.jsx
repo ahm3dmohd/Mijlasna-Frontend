@@ -12,6 +12,9 @@ import { logout } from "./services/authService";
 import MyBookingsPage from "./pages/bookings/MyBookingsPage";
 import BookingDetailsPage from "./pages/bookings/BookingDetailsPage";
 import EditBookingPage from "./pages/bookings/EditBookingPage";
+import ManageUsersPage from "./pages/Admin/ManageUsersPage";
+import UserDetailsPage from "./pages/Admin/UserDetailsPage";
+import EditUserPage from "./pages/Admin/EditUserPage";
 
 // read the user from the saved token (outside App so it only runs when called)
 function getUserFromToken() {
@@ -65,6 +68,18 @@ function App() {
         <Route path="/bookings/:id" element={user ? <BookingDetailsPage /> : <Navigate to="/sign-in" />}
         />
         <Route path="/bookings/:id/edit" element={user ? <EditBookingPage /> : <Navigate to="/sign-in" />}
+        />
+        <Route
+          path="/users"
+          element={user ? <ManageUsersPage /> : <Navigate to="/sign-in" />}
+        />
+        <Route
+          path="/users/:id"
+          element={user ? <UserDetailsPage /> : <Navigate to="/sign-in" />}
+        />
+        <Route
+          path="/users/:id/edit"
+          element={user ? <EditUserPage /> : <Navigate to="/sign-in" />}
         />
       </Routes>
     </div>

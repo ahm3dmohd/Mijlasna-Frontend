@@ -24,7 +24,10 @@ function MyBookingsPage() {
 
   return (
     <main>
-      <h1>My Bookings</h1>
+      <div className='page-head'>
+        <h1>My Bookings</h1>
+        <Link to='/venues' className='btn'>Book a Venue</Link>
+      </div>
       <p className='error'>{error}</p>
 
       {bookings.length === 0 && !error && <p>You have no bookings yet.</p>}
@@ -32,11 +35,13 @@ function MyBookingsPage() {
       <div className='card-grid'>
       {bookings.map((booking) => (
         <div key={booking._id} className='card'>
-          <h2>{booking.venue ? booking.venue.name : 'Deleted venue'}</h2>
+          <div className='card-head'>
+            <h2>{booking.venue ? booking.venue.name : 'Deleted venue'}</h2>
+            <span className={`badge status-${booking.status}`}>{booking.status}</span>
+          </div>
           <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
           <p><strong>Time:</strong> {booking.timeOfDay}</p>
-          <p><strong>Status:</strong> {booking.status}</p>
-          <Link to={`/bookings/${booking._id}`}>View Details</Link>
+          <Link to={`/bookings/${booking._id}`} className='btn-secondary card-link'>View Details</Link>
         </div>
       ))}
       </div>

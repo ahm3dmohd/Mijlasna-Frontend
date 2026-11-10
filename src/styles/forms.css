@@ -1,15 +1,30 @@
 /* Forms: sign in, sign up, edit profile, bookings and venues */
 
 form {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-width: 480px;
-  padding: 28px;
-  background-color: var(--card);
+  gap: 8px;
+  width: 100%;
+  max-width: 560px;
+  padding: 36px 28px 28px;
+  background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* sadu band along the top of every form */
+form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background-image: var(--sadu-teeth);
+  background-size: 16px 8px;
 }
 
 /* Each label + input pair */
@@ -17,40 +32,93 @@ form div {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 8px;
 }
 
 label {
-  font-weight: 600;
-  color: var(--text-muted);
+  font-weight: 700;
+  color: var(--brown);
+}
+
+/* forms without a div around each field still get space above the label */
+form > label {
+  margin-top: 10px;
 }
 
 input,
 select,
 textarea {
-  font-family: inherit;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-small);
+  background-color: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
   font-size: 1rem;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background-color: white;
-  color: var(--text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: var(--gold);
 }
 
 input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(184, 134, 47, 0.2);
+  border-color: var(--red);
+  box-shadow: 0 0 0 4px rgba(155, 28, 35, 0.15);
 }
 
 textarea {
-  min-height: 100px;
+  min-height: 110px;
   resize: vertical;
 }
 
-/* The buttons row at the bottom of a form */
+select {
+  cursor: pointer;
+}
+
+/* The buttons at the bottom of a form */
+form > button {
+  margin-top: 18px;
+}
+
 form .actions {
   flex-direction: row;
-  margin-top: 6px;
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+/* ---------- Sign in and sign up pages ---------- */
+
+/* a narrow column in the middle of the page */
+.auth {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.auth form {
+  max-width: none;
+}
+
+/* "No account yet? Sign up" under the form */
+.auth-note {
+  margin-top: 18px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.auth-note a {
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  form {
+    padding: 30px 18px 20px;
+  }
 }

@@ -2,31 +2,36 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { getVenueById, deleteVenue } from "../../services/venueService";
 
-function VenueDetailsPage() {
+function VenueDetailsPage({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [venue, setVenue] = useState(null);
-
-  async function getVenue() {
-    try {
-      const res = await getVenueById(id);
-      setVenue(res);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    async function getVenue() {
+      try {
+        const res = await getVenueById(id);
+        setVenue(res);
+      } catch (err) {
+        setError(err?.response?.data?.message || "Failed to load venue.");
+      }
+    }
     getVenue();
   }, [id]);
 
   async function handleDelete() {
+    if (!window.confirm("Are you sure you want to delete this venue?")) return;
     try {
       await deleteVenue(id);
       navigate("/venues");
     } catch (err) {
-      console.log(err);
+      setError(err?.response?.data?.message || "Failed to delete venue.");
     }
+  }
+
+  if (error && !venue) {
+    return <p className="error">{error}</p>;
   }
 
   if (!venue) {
@@ -37,10 +42,14 @@ function VenueDetailsPage() {
     );
   }
 
+  // the venue owner (or an admin) can edit and delete this venue
+  const isOwner = user && (venue.owner === user._id || user.role === "admin");
+
   return (
     <div>
 
       <h1>Venue Details</h1>
+      <p className="error">{error}</p>
 
       <h2>{venue.name}</h2>
       <p>Type: {venue.type}</p>
@@ -50,16 +59,18 @@ function VenueDetailsPage() {
       <p>Weekday Price: {venue.weekDayPrice}</p>
       <p>Weekend Price: {venue.weekendPrice}</p>
 
-      {user.role === "customer" && (
-        <button onClick={() => navigate(`/venues/${id}/book`)}>Book Venue</button>
-      )}
+      <div className="actions">
+        {user && user.role === "customer" && (
+          <button onClick={() => navigate(`/venues/${id}/book`)}>Book Venue</button>
+        )}
 
-      {isOwner && (
-        <>
-          <button onClick={() => navigate(`/venues/${id}/edit`)}>Edit Venue</button>
-          <button onClick={handleDelete}>Delete Venue</button>
-        </>
-      )}
+        {isOwner && (
+          <>
+            <button onClick={() => navigate(`/venues/${id}/edit`)}>Edit Venue</button>
+            <button className="btn-danger" onClick={handleDelete}>Delete Venue</button>
+          </>
+        )}
+      </div>
 
     </div>
   );

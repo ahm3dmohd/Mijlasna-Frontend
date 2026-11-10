@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { signUp } from "../services/authService";
 
 function Signup() {
@@ -41,7 +41,7 @@ function Signup() {
   };
 
   return (
-    <main>
+    <main className="auth">
       <h1>Sign Up</h1>
       <p className="error">{error}</p>
       <form onSubmit={handleSubmit}>
@@ -109,9 +109,10 @@ function Signup() {
         </div>
         <div className="actions">
           <button disabled={isFormInvalid() || submitting}>{submitting ? 'Signing up...' : 'Sign Up'}</button>
-          <button type="button" onClick={() => navigate("/")}>Cancel</button>
+          <button type="button" className="btn-secondary" onClick={() => navigate("/")}>Cancel</button>
         </div>
       </form>
+      <p className="auth-note">Already have an account? <Link to="/sign-in">Sign in</Link></p>
     </main>
   );
 }

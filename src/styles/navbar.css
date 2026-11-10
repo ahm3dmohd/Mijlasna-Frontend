@@ -1,51 +1,145 @@
 /* Navbar at the top of every page */
 
+/* The header stays at the top while you scroll */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(42, 22, 17, 0.18);
+}
+
 .navbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  padding: 14px 24px;
-  background-color: var(--text);
-  box-shadow: var(--shadow);
+  gap: 8px 16px;
+  padding: 10px 24px;
+  background-color: var(--ink);
 }
 
-.navbar a {
-  color: var(--bg);
+/* The site name on the left, in English and Arabic */
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-right: auto;
+  padding: 4px 0;
+  font-family: var(--font-heading);
   text-decoration: none;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: var(--radius);
 }
 
-.navbar a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* The site name on the left */
-.navbar .brand {
-  font-family: 'Amiri', serif;
+.brand-name {
   font-size: 1.6rem;
   font-weight: 700;
-  color: var(--gold);
-  margin-right: auto;
+  color: var(--white);
 }
 
-.navbar .brand:hover {
+.brand-arabic {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-small);
+  color: var(--cream-deep);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 253, 248, 0.1);
+  color: var(--white);
+}
+
+/* The page you are on now (NavLink adds the "active" class by itself) */
+.nav-links a.active {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.nav-links button {
+  min-height: 40px;
+  margin-left: 8px;
+  padding: 0 16px;
+  border-color: var(--cream-deep);
+  background-color: transparent;
+  color: var(--cream-deep);
+}
+
+.nav-links button:hover {
+  background-color: var(--white);
+  border-color: var(--white);
+  color: var(--ink);
+}
+
+/* The menu button (three lines), only shown on phones */
+.menu-button {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 46px;
+  min-height: 46px;
+  padding: 0;
+  border-color: transparent;
   background-color: transparent;
 }
 
-.navbar button {
-  padding: 6px 14px;
+.menu-button:hover {
+  background-color: rgba(255, 253, 248, 0.1);
+  border-color: transparent;
 }
 
-/* On small screens the links wrap under the site name */
-@media (max-width: 600px) {
+.menu-button span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--white);
+}
+
+/* ---------- Phones and small tablets ---------- */
+
+@media (max-width: 820px) {
   .navbar {
-    padding: 12px 16px;
+    padding: 8px 16px;
   }
 
-  .navbar .brand {
+  .menu-button {
+    display: inline-flex;
+  }
+
+  /* links are hidden until the menu button is pressed */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
     width: 100%;
+    padding: 8px 0 12px;
+    border-top: 1px solid rgba(255, 253, 248, 0.15);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    min-height: 48px;
+  }
+
+  .nav-links button {
+    margin: 8px 0 0;
+    min-height: 46px;
   }
 }

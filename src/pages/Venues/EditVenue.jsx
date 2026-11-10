@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState, useEffect } from 'react'
 import {useNavigate, useParams} from 'react-router'
 import { editVenue, getVenueById } from '../../services/venueService';
@@ -15,22 +14,26 @@ function EditVenue() {
             weekendPrice: "",
             weekDayPrice: "",
     });
-
-  async function getVenue() {
-    const res = await getVenueById(id);
-    setFormData({
-            name: res.name,
-            type: res.type,
-            description: res.description,
-            address: res.address,
-            capacity: res.capacity,
-            images: res.images,
-            weekendPrice: res.weekendPrice,
-            weekDayPrice: res.weekDayPrice,
-    });
-  }
+    const [error, setError] = useState("");
 
   useEffect(() => {
+    async function getVenue() {
+      try {
+        const res = await getVenueById(id);
+        setFormData({
+                name: res.name,
+                type: res.type,
+                description: res.description,
+                address: res.address,
+                capacity: res.capacity,
+                images: res.images,
+                weekendPrice: res.weekendPrice,
+                weekDayPrice: res.weekDayPrice,
+        });
+      } catch (err) {
+        setError(err?.response?.data?.message || "Failed to load venue.");
+      }
+    }
     getVenue();
   }, [id]);
 
@@ -41,13 +44,18 @@ function EditVenue() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const res = await editVenue(id,formData);
-        navigate(`/venues/${id}`);
+        try {
+            await editVenue(id,formData);
+            navigate(`/venues/${id}`);
+        } catch (err) {
+            setError(err?.response?.data?.message || "Failed to update venue.");
+        }
     }
 
     return (
         <div>
             <h1>Edit Venue</h1>
+            <p className="error">{error}</p>
 
             <form onSubmit={handleSubmit}>
 
@@ -62,8 +70,8 @@ function EditVenue() {
                 />
 
                 <label htmlFor="type">Type: </label>
-                <select id="type" name="type" required>
-                    <option value="" disabled selected>Choose Type...</option>
+                <select id="type" name="type" onChange={handleChange} value={formData.type} required>
+                    <option value="" disabled>Choose Type...</option>
                     <option value="Mijlas">Mijlas</option>
                     <option value="Pool House">Pool House</option>
                     <option value="Hall">Hall</option>
@@ -116,7 +124,7 @@ function EditVenue() {
                     required
                 />
 
-                <button type="submit">Create Venue</button>
+                <button type="submit">Save Changes</button>
 
             </form>
 

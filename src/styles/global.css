@@ -1,90 +1,253 @@
-/* Global styles: colors, fonts, page layout, buttons and links */
-
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap');
+/* Global styles: colors, fonts, page layout, buttons, footer */
+/* The look is a modern majlis: sadu red, coffee brown and warm cream */
 
 /* Change the colors here and the whole site updates */
 :root {
-  --bg: #f7f1e6;          /* sand background */
-  --card: #fffaf2;        /* card and form background */
-  --text: #3e2a1e;        /* deep brown text */
-  --text-muted: #7a6352;  /* lighter brown for labels */
-  --gold: #b8862f;        /* main buttons and links */
-  --gold-dark: #946a1f;   /* button hover */
-  --border: #e6d8c3;      /* lines around cards and inputs */
-  --danger: #a63d2f;      /* delete buttons and errors */
-  --radius: 10px;
-  --shadow: 0 2px 10px rgba(62, 42, 30, 0.08);
+  --cream: #f6ecdd;        /* page background, like a majlis wall */
+  --cream-deep: #eddcc4;   /* darker cream for sections */
+  --surface: #fffaf2;      /* cards and forms */
+  --ink: #2a1611;          /* dark coffee: main text and navbar */
+  --brown: #5c3120;        /* headings and outlines */
+  --muted: #7a5546;        /* labels and small text */
+  --red: #9b1c23;          /* sadu red: main buttons */
+  --red-dark: #7a1219;     /* button hover */
+  --gold: #c08a3e;         /* small thread accents */
+  --border: #e3d0b8;       /* lines around cards and inputs */
+  --white: #fffdf8;
+  --black: #1c1210;
+
+  --radius: 14px;
+  --radius-small: 10px;
+  --shadow: 0 1px 2px rgba(42, 22, 17, 0.06), 0 8px 24px rgba(42, 22, 17, 0.08);
+  --shadow-lift: 0 2px 4px rgba(42, 22, 17, 0.08), 0 16px 36px rgba(42, 22, 17, 0.14);
+
+  --font-heading: 'El Messiri', 'Tajawal', serif;
+  --font-body: 'Tajawal', system-ui, sans-serif;
+
+  /* Sadu weaving patterns, drawn as small SVG tiles that repeat */
+  /* wide band: stripes with white and black diamonds on red */
+  --sadu-band: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' fill='%239b1c23'/%3E%3Crect width='28' height='3' fill='%231c1210'/%3E%3Crect y='3' width='28' height='2' fill='%23fffdf8'/%3E%3Crect y='23' width='28' height='2' fill='%23fffdf8'/%3E%3Crect y='25' width='28' height='3' fill='%231c1210'/%3E%3Cpath d='M14 7l7 7-7 7-7-7z' fill='%23fffdf8'/%3E%3Cpath d='M14 10.5l3.5 3.5-3.5 3.5-3.5-3.5z' fill='%231c1210'/%3E%3Cpath d='M0 9.5l4.5 4.5L0 18.5zM28 9.5L23.5 14l4.5 4.5z' fill='%231c1210'/%3E%3C/svg%3E");
+  /* thin band: a row of white triangles on red */
+  --sadu-teeth: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8'%3E%3Crect width='16' height='8' fill='%239b1c23'/%3E%3Cpath d='M0 8l8-8 8 8z' fill='%23fffdf8'/%3E%3Cpath d='M4.5 8L8 4.5 11.5 8z' fill='%231c1210'/%3E%3C/svg%3E");
+  /* very light woven diamonds for backgrounds */
+  --sadu-weave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 2l20 20-20 20L2 22z' fill='none' stroke='%235c3120' stroke-opacity='.05' stroke-width='1.5'/%3E%3Cpath d='M22 16l6 6-6 6-6-6z' fill='%239b1c23' fill-opacity='.04'/%3E%3C/svg%3E");
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  background-color: var(--bg);
-  color: var(--text);
-  font-family: 'Cairo', sans-serif;
-  line-height: 1.6;
+  background-color: var(--cream);
+  background-image: var(--sadu-weave);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The whole app: navbar on top, page in the middle, footer at the bottom */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Every page sits inside this box (see App.jsx) */
 .container {
-  max-width: 1000px;
+  flex: 1;
+  width: 100%;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 32px 16px;
+  padding: 40px 20px 64px;
 }
 
+/* Pages fade in softly when they open */
+.container > * {
+  animation: rise 0.35s ease-out both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Headings */
 h1,
-h2 {
-  font-family: 'Amiri', serif;
-  color: var(--text);
+h2,
+h3 {
+  font-family: var(--font-heading);
+  color: var(--ink);
+  line-height: 1.2;
   margin-top: 0;
+  text-wrap: balance;
 }
 
 h1 {
-  font-size: 2.2rem;
-  margin-bottom: 20px;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+/* a short red and gold thread under every page title */
+.container h1::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: 12px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--red) 0 70%, var(--gold) 70% 100%);
 }
 
 h2 {
-  font-size: 1.5rem;
-  margin-bottom: 12px;
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+p {
+  margin: 0 0 12px;
 }
 
 a {
-  color: var(--gold-dark);
+  color: var(--red);
+  text-underline-offset: 3px;
 }
 
-/* Buttons */
-button {
-  font-family: inherit;
+a:hover {
+  color: var(--red-dark);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* Small text above a title */
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Keyboard users can always see where they are */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ---------- Buttons ---------- */
+
+button,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 2px solid var(--red);
+  border-radius: 12px;
+  background-color: var(--red);
+  color: var(--white);
+  font-family: var(--font-body);
   font-size: 1rem;
-  font-weight: 600;
-  padding: 10px 20px;
-  border: none;
-  border-radius: var(--radius);
-  background-color: var(--gold);
-  color: white;
+  font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 }
 
-button:hover {
-  background-color: var(--gold-dark);
+button:hover,
+.btn:hover {
+  background-color: var(--red-dark);
+  border-color: var(--red-dark);
+  color: var(--white);
+}
+
+button:active,
+.btn:active {
+  transform: scale(0.98);
 }
 
 button:disabled {
-  background-color: var(--border);
-  color: var(--text-muted);
+  background-color: var(--cream-deep);
+  border-color: var(--cream-deep);
+  color: var(--muted);
   cursor: not-allowed;
+  transform: none;
 }
 
+/* two buttons next to each other get a little space */
+button + button {
+  margin-left: 10px;
+}
+
+/* outlined brown button, for Cancel and Back */
+.btn-secondary,
+.actions a:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 2px solid var(--brown);
+  border-radius: 12px;
+  background-color: transparent;
+  color: var(--brown);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-secondary:hover,
+.actions a:not(.btn):hover {
+  background-color: var(--brown);
+  border-color: var(--brown);
+  color: var(--white);
+}
+
+/* outlined red button, for Delete */
 .btn-danger {
-  background-color: var(--danger);
+  background-color: transparent;
+  color: var(--red);
 }
 
 .btn-danger:hover {
-  background-color: #842f24;
+  background-color: var(--red);
+  color: var(--white);
+}
+
+/* cream button, used on dark and red backgrounds */
+.btn-light {
+  background-color: var(--white);
+  border-color: var(--white);
+  color: var(--red-dark);
+}
+
+.btn-light:hover {
+  background-color: var(--cream-deep);
+  border-color: var(--cream-deep);
+  color: var(--red-dark);
 }
 
 /* A row of buttons and links, like Edit / Delete / Back */
@@ -93,30 +256,96 @@ button:disabled {
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
-/* Links inside an actions row look like outlined buttons */
-.actions a {
-  padding: 9px 18px;
-  border: 1px solid var(--gold);
-  border-radius: var(--radius);
-  color: var(--gold-dark);
-  font-weight: 600;
-  text-decoration: none;
+.actions button + button {
+  margin-left: 0;
 }
 
-.actions a:hover {
-  background-color: var(--gold);
-  color: white;
-}
+/* ---------- Messages ---------- */
 
-/* Error messages */
 .error {
-  color: var(--danger);
-  font-weight: 600;
+  padding: 12px 16px;
+  border: 1px solid #e5b9b3;
+  border-left: 5px solid var(--red);
+  border-radius: var(--radius-small);
+  background-color: #fbeae7;
+  color: var(--red-dark);
+  font-weight: 700;
 }
 
+/* an empty error takes no space */
 .error:empty {
   display: none;
+}
+
+/* ---------- Sadu bands ---------- */
+
+.sadu-band {
+  height: 20px;
+  background-image: var(--sadu-band);
+  background-size: 20px 20px;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  background-color: var(--ink);
+  color: var(--cream-deep);
+}
+
+.footer-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.footer-brand {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.footer-brand span {
+  margin-left: 8px;
+  color: var(--gold);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 600px) {
+  .container {
+    padding: 28px 16px 48px;
+  }
+
+  /* buttons in a row become full width, easier to tap */
+  .actions > * {
+    flex: 1 1 100%;
+  }
+}
+
+/* People who turned off animations get no movement */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

@@ -8,6 +8,11 @@ import Dashboard from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
 import EditProfile from "./pages/EditProfile";
 import VenuesPage from "./pages/Venues/VenuesPage";
+import VenueDetailsPage from "./pages/Venues/VenueDetailsPage";
+import CreateVenue from "./pages/Venues/CreateVenue";
+import EditVenue from "./pages/Venues/EditVenue";
+import CreateBooking from "./pages/bookings/CreateBooking";
+import OwnerVenuesBooking from "./pages/bookings/OwnerVenuesBooking";
 import { logout } from "./services/authService";
 import MyBookingsPage from "./pages/bookings/MyBookingsPage";
 import BookingDetailsPage from "./pages/bookings/BookingDetailsPage";
@@ -48,14 +53,23 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="app">
       <Navbar user={user} handleLogout={handleLogout} />
       <div className="container">
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/sign-in" element={<SignInPage setUser={setUser} />} />
-        <Route path="/venues" element={<VenuesPage />} />
+        <Route path="/venues" element={<VenuesPage user={user} />} />
+        <Route path="/venues/new" element={user && (user.role === "owner" || user.role === "admin") ? <CreateVenue /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/venues/:id" element={<VenueDetailsPage user={user} />} />
+        <Route path="/venues/:id/edit" element={user && (user.role === "owner" || user.role === "admin") ? <EditVenue /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/venues/:id/book" element={user ? <CreateBooking /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/owner/bookings" element={user && user.role === "owner" ? <OwnerVenuesBooking /> : <Navigate to="/sign-in" />}
+        />
         <Route
           path="/dashboard"
           element={user ? <Dashboard user={user} /> : <Navigate to="/sign-in" />}
@@ -72,18 +86,25 @@ function App() {
         />
         <Route
           path="/users"
-          element={user ? <ManageUsersPage /> : <Navigate to="/sign-in" />}
+          element={user && user.role === "admin" ? <ManageUsersPage /> : <Navigate to="/" />}
         />
         <Route
           path="/users/:id"
-          element={user ? <UserDetailsPage /> : <Navigate to="/sign-in" />}
+          element={user && user.role === "admin" ? <UserDetailsPage /> : <Navigate to="/" />}
         />
         <Route
           path="/users/:id/edit"
-          element={user ? <EditUserPage /> : <Navigate to="/sign-in" />}
+          element={user && user.role === "admin" ? <EditUserPage /> : <Navigate to="/" />}
         />
       </Routes>
       </div>
+      <footer className="footer">
+        <div className="sadu-band" aria-hidden="true"></div>
+        <div className="footer-inner">
+          <div className="footer-brand">Mijlasna<span lang="ar">مجلسنا</span></div>
+          <p>Majlis, diwaniya, hall and pool house booking.</p>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router'
 import { getAllVenues } from '../../services/venueService'
 
-function VenuesPage() {
+function VenuesPage({ user }) {
   const [venues, setVenues] = useState([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
@@ -23,7 +24,12 @@ function VenuesPage() {
 
   return (
     <main>
-      <h1>Venues</h1>
+      <div className='page-head'>
+        <h1>Venues</h1>
+        {user && (user.role === 'owner' || user.role === 'admin') && (
+          <Link to='/venues/new' className='btn'>Create Venue</Link>
+        )}
+      </div>
       <p className='error'>{error}</p>
 
       {venues.length === 0 && !error && <p>No venues yet.</p>}
@@ -31,12 +37,23 @@ function VenuesPage() {
       <div className='card-grid'>
       {venues.map((venue) => (
         <div key={venue._id} className='card'>
-          <h2>{venue.name}</h2>
-          <p><strong>Type:</strong> {venue.type}</p>
+          <div className='card-head'>
+            <h2>{venue.name}</h2>
+            <span className='badge'>{venue.type}</span>
+          </div>
           <p><strong>Address:</strong> {venue.address}</p>
-          <p><strong>Capacity:</strong> {venue.capacity}</p>
-          <p><strong>Weekday price:</strong> {venue.weekDayPrice} BD</p>
-          <p><strong>Weekend price:</strong> {venue.weekendPrice} BD</p>
+          <p><strong>Capacity:</strong> {venue.capacity} guests</p>
+          <div className='price-row'>
+            <div>
+              <span className='price-label'>Weekday</span>
+              <span className='price'>{venue.weekDayPrice} BD</span>
+            </div>
+            <div>
+              <span className='price-label'>Weekend</span>
+              <span className='price'>{venue.weekendPrice} BD</span>
+            </div>
+          </div>
+          <Link to={`/venues/${venue._id}`} className='btn-secondary card-link'>View Details</Link>
         </div>
       ))}
       </div>

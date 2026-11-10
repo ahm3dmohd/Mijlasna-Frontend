@@ -1,26 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import Navbar from "./components/Navbar";
 import SignupPage from "./pages/SignupPage";
 import Homepage from "./pages/Homepage";
 import SignInPage from "./pages/SigninPage";
 import Dashboard from "./pages/Dashboard";
-import VenuesPage from "./pages/VenuesPage";
+import MyProfile from "./pages/MyProfile";
+import EditProfile from "./pages/EditProfile";
+import VenuesPage from "./pages/Venues/VenuesPage";
 import { logout } from "./services/authService";
 import MyBookingsPage from "./pages/bookings/MyBookingsPage";
 import BookingDetailsPage from "./pages/bookings/BookingDetailsPage";
 import EditBookingPage from "./pages/bookings/EditBookingPage";
 
+// read the user from the saved token (outside App so it only runs when called)
+function getUserFromToken() {
+  const token = localStorage.getItem("token");
+
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    // the token expired, so the user has to sign in again
+    if (payload.exp * 1000 < Date.now()) {
+      localStorage.removeItem("token");
+      return null;
+    }
+
+    return payload;
+  } catch {
+    // the token is broken, so remove it
+    localStorage.removeItem("token");
+    return null;
+  }
+}
+
 function App() {
-  function  getUserFromToken (){
-    const token = localStorage.getItem("token");
-
-    if (!token) return null;
-
-    return JSON.parse(atob(token.split(".")[1]));
-  };
-
-
   const [user, setUser] = useState(getUserFromToken());
 
   function handleLogout() {
@@ -39,6 +55,10 @@ function App() {
         <Route
           path="/dashboard"
           element={user ? <Dashboard user={user} /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/me" element={user ? <MyProfile handleLogout={handleLogout} /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/me/edit" element={user ? <EditProfile /> : <Navigate to="/sign-in" />}
         />
         <Route path="/bookings" element={user ? <MyBookingsPage /> : <Navigate to="/sign-in" />}
         />

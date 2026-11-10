@@ -4,12 +4,15 @@ function Navbar({ user, handleLogout }) {
   return (
     <nav>
       <Link to='/'>Homepage</Link>
-      {user 
-      ? 
+      <Link to='/venues'>Venues</Link>
+      {user
+      ?
       (<>
         <Link to='/dashboard'>Dashboard</Link>
+        <Link to='/bookings'>My Bookings</Link>
+        <Link to='/me'>Profile</Link>
       <button onClick={handleLogout}>Sign Out</button>
-      </>) : 
+      </>) :
       (<>
         <Link to='/sign-up'>Sign Up</Link>
         <Link to='/sign-in'>Sign In</Link>

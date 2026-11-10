@@ -31,7 +31,7 @@ function Signup() {
       await signUp(formData);
       navigate('/sign-in')
     } catch (err) {
-      setError(err.response.data.message);
+      setError(err?.response?.data?.message || "Sign up failed. Please try again.");
       setSubmitting(false)
     }
   }
@@ -109,7 +109,7 @@ function Signup() {
         </div>
         <div>
           <button disabled={isFormInvalid() || submitting}>{submitting ? 'Signing up...' : 'Sign Up'}</button>
-          <button onClick={() => navigate("/")}>Cancel</button>
+          <button type="button" onClick={() => navigate("/")}>Cancel</button>
         </div>
       </form>
     </main>

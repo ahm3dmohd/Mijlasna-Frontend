@@ -8,6 +8,9 @@ import Dashboard from "./pages/Dashboard";
 import MyProfile from "./pages/MyProfile";
 import EditProfile from "./pages/EditProfile";
 import VenuesPage from "./pages/Venues/VenuesPage";
+import CreateVenue from "./pages/Venues/CreateVenue"
+import EditVenue from "./pages/Venues/EditVenue"
+import VenueDetailsPage from "./pages/Venues/VenueDetailsPage";
 import { logout } from "./services/authService";
 import MyBookingsPage from "./pages/bookings/MyBookingsPage";
 import BookingDetailsPage from "./pages/bookings/BookingDetailsPage";
@@ -15,6 +18,10 @@ import EditBookingPage from "./pages/bookings/EditBookingPage";
 import ManageUsersPage from "./pages/Admin/ManageUsersPage";
 import UserDetailsPage from "./pages/Admin/UserDetailsPage";
 import EditUserPage from "./pages/Admin/EditUserPage";
+import CreateBooking from "./pages/bookings/CreateBooking"
+import OwnerVenuesBooking from "./pages/bookings/OwnerVenuesBooking"
+
+
 
 // read the user from the saved token (outside App so it only runs when called)
 function getUserFromToken() {
@@ -55,32 +62,20 @@ function App() {
         <Route path="/sign-up" element={<SignupPage />} />
         <Route path="/sign-in" element={<SignInPage setUser={setUser} />} />
         <Route path="/venues" element={<VenuesPage />} />
-        <Route
-          path="/dashboard"
-          element={user ? <Dashboard user={user} /> : <Navigate to="/sign-in" />}
-        />
-        <Route path="/me" element={user ? <MyProfile handleLogout={handleLogout} /> : <Navigate to="/sign-in" />}
-        />
-        <Route path="/me/edit" element={user ? <EditProfile /> : <Navigate to="/sign-in" />}
-        />
-        <Route path="/bookings" element={user ? <MyBookingsPage /> : <Navigate to="/sign-in" />}
-        />
-        <Route path="/bookings/:id" element={user ? <BookingDetailsPage /> : <Navigate to="/sign-in" />}
-        />
-        <Route path="/bookings/:id/edit" element={user ? <EditBookingPage /> : <Navigate to="/sign-in" />}
-        />
-        <Route
-          path="/users"
-          element={user ? <ManageUsersPage /> : <Navigate to="/sign-in" />}
-        />
-        <Route
-          path="/users/:id"
-          element={user ? <UserDetailsPage /> : <Navigate to="/sign-in" />}
-        />
-        <Route
-          path="/users/:id/edit"
-          element={user ? <EditUserPage /> : <Navigate to="/sign-in" />}
-        />
+        <Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Navigate to="/sign-in" />}/>
+        <Route path="/venues/:id" element={<VenueDetailsPage />} />
+        <Route path="/venues/create" element={<CreateVenue />} />
+        <Route path="/venues/:id/edit" element={<EditVenue />} />
+        <Route path="/venues/:id/bookings" element={<CreateBooking />} />
+        <Route path="/me" element={user ? <MyProfile handleLogout={handleLogout} /> : <Navigate to="/sign-in" />}/>
+        <Route path="/me/edit" element={user ? <EditProfile /> : <Navigate to="/sign-in" />}/>
+        <Route path="/bookings" element={user ? <MyBookingsPage /> : <Navigate to="/sign-in" />}/>
+        <Route path="/bookings/:id" element={user ? <BookingDetailsPage /> : <Navigate to="/sign-in" />}/>
+        <Route path="/bookings/:id/edit" element={user ? <EditBookingPage /> : <Navigate to="/sign-in" />}/>
+        <Route path="/ownerBookings" element={user ? <OwnerVenuesBooking /> : <Navigate to="/sign-in" />}/>
+        <Route path="/users" element={user ? <ManageUsersPage /> : <Navigate to="/sign-in" />}/>
+        <Route path="/users/:id" element={user ? <UserDetailsPage /> : <Navigate to="/sign-in" />}/>
+        <Route path="/users/:id/edit" element={user ? <EditUserPage /> : <Navigate to="/sign-in" />}/>
       </Routes>
     </div>
   );

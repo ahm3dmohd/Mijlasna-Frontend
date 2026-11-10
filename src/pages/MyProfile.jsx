@@ -34,15 +34,15 @@ function MyProfile({ handleLogout }) {
   if (!user) return <p>Loading...</p>
 
   return (
-    <div>
+    <div className='card details'>
       <h2>User Profile</h2>
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Email:</strong> {user.email}</p>
       <p><strong>Phone:</strong> {user.phone}</p>
 
-      <div>
+      <div className='actions'>
         <Link to="/me/edit">Edit</Link>
-        <button onClick={handleDelete}>
+        <button className='btn-danger' onClick={handleDelete}>
           Delete Account
         </button>
       </div>

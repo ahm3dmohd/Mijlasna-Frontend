@@ -29,8 +29,9 @@ function MyBookingsPage() {
 
       {bookings.length === 0 && !error && <p>You have no bookings yet.</p>}
 
+      <div className='card-grid'>
       {bookings.map((booking) => (
-        <div key={booking._id}>
+        <div key={booking._id} className='card'>
           <h2>{booking.venue ? booking.venue.name : 'Deleted venue'}</h2>
           <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
           <p><strong>Time:</strong> {booking.timeOfDay}</p>
@@ -38,6 +39,7 @@ function MyBookingsPage() {
           <Link to={`/bookings/${booking._id}`}>View Details</Link>
         </div>
       ))}
+      </div>
     </main>
   )
 }

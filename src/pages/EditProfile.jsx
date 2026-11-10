@@ -80,7 +80,7 @@ function EditProfile() {
                     />
                 </div>
 
-                <div>
+                <div className='actions'>
                     <button type="submit">Save Changes
                     </button>
                     <Link to="/me">

@@ -47,6 +47,7 @@ function App() {
   return (
     <div>
       <Navbar user={user} handleLogout={handleLogout} />
+      <div className="container">
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/sign-up" element={<SignupPage />} />
@@ -67,6 +68,7 @@ function App() {
         <Route path="/bookings/:id/edit" element={user ? <EditBookingPage /> : <Navigate to="/sign-in" />}
         />
       </Routes>
+      </div>
     </div>
   );
 }

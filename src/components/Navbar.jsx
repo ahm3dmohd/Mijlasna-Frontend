@@ -2,7 +2,8 @@ import { Link } from 'react-router'
 
 function Navbar({ user, handleLogout }) {
   return (
-    <nav>
+    <nav className='navbar'>
+      <Link to='/' className='brand'>Mijlasna</Link>
       <Link to='/'>Homepage</Link>
       <Link to='/venues'>Venues</Link>
       {user

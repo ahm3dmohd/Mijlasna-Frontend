@@ -48,6 +48,7 @@ function BookingDetailsPage() {
       <h1>Booking Details</h1>
       <p className='error'>{error}</p>
 
+      <div className='card details'>
       <p><strong>Venue:</strong> {booking.venue ? booking.venue.name : 'Deleted venue'}</p>
       <p><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
       <p><strong>Time:</strong> {booking.timeOfDay}</p>
@@ -56,13 +57,14 @@ function BookingDetailsPage() {
       <p><strong>Deposit paid:</strong> {booking.deposit ? 'Yes' : 'No'}</p>
       <p><strong>Notes:</strong> {booking.notes || 'No notes'}</p>
 
-      <div>
+      <div className='actions'>
         <Link to={`/bookings/${booking._id}/edit`}>Edit</Link>
         {(booking.status === 'pending' || booking.status === 'confirmed') && (
           <button onClick={handleCancel}>Cancel Booking</button>
         )}
-        <button onClick={handleDelete}>Delete</button>
+        <button className='btn-danger' onClick={handleDelete}>Delete</button>
         <Link to='/bookings'>Back</Link>
+      </div>
       </div>
     </main>
   )

@@ -59,7 +59,7 @@ const SignInForm = ({ setUser }) => {
             required
           />
         </div>
-        <div>
+        <div className='actions'>
           <button>Sign In</button>
           <button type='button' onClick={() => navigate('/')}>Cancel</button>
         </div>

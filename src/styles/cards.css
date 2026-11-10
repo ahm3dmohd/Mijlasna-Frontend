@@ -1,0 +1,42 @@
+/* Cards: venues list, bookings list, booking details and profile */
+
+/* The grid that holds the cards */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  padding: 22px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card p {
+  margin: 6px 0;
+}
+
+.card strong {
+  color: var(--text-muted);
+}
+
+/* "View Details" link at the bottom of a card */
+.card a {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+/* A single big card, for details and profile pages */
+.details {
+  max-width: 600px;
+}
+
+/* Inside a card, the actions links keep the button look */
+.card .actions a {
+  margin-top: 0;
+}

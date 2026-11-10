@@ -107,7 +107,7 @@ function Signup() {
             required
           />
         </div>
-        <div>
+        <div className="actions">
           <button disabled={isFormInvalid() || submitting}>{submitting ? 'Signing up...' : 'Sign Up'}</button>
           <button type="button" onClick={() => navigate("/")}>Cancel</button>
         </div>

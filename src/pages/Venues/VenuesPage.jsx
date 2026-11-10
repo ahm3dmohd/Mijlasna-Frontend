@@ -28,8 +28,9 @@ function VenuesPage() {
 
       {venues.length === 0 && !error && <p>No venues yet.</p>}
 
+      <div className='card-grid'>
       {venues.map((venue) => (
-        <div key={venue._id}>
+        <div key={venue._id} className='card'>
           <h2>{venue.name}</h2>
           <p><strong>Type:</strong> {venue.type}</p>
           <p><strong>Address:</strong> {venue.address}</p>
@@ -38,6 +39,7 @@ function VenuesPage() {
           <p><strong>Weekend price:</strong> {venue.weekendPrice} BD</p>
         </div>
       ))}
+      </div>
     </main>
   )
 }

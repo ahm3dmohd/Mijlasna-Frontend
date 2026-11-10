@@ -1,0 +1,122 @@
+/* Global styles: colors, fonts, page layout, buttons and links */
+
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap');
+
+/* Change the colors here and the whole site updates */
+:root {
+  --bg: #f7f1e6;          /* sand background */
+  --card: #fffaf2;        /* card and form background */
+  --text: #3e2a1e;        /* deep brown text */
+  --text-muted: #7a6352;  /* lighter brown for labels */
+  --gold: #b8862f;        /* main buttons and links */
+  --gold-dark: #946a1f;   /* button hover */
+  --border: #e6d8c3;      /* lines around cards and inputs */
+  --danger: #a63d2f;      /* delete buttons and errors */
+  --radius: 10px;
+  --shadow: 0 2px 10px rgba(62, 42, 30, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Cairo', sans-serif;
+  line-height: 1.6;
+}
+
+/* Every page sits inside this box (see App.jsx) */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+h1,
+h2 {
+  font-family: 'Amiri', serif;
+  color: var(--text);
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+a {
+  color: var(--gold-dark);
+}
+
+/* Buttons */
+button {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius);
+  background-color: var(--gold);
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--gold-dark);
+}
+
+button:disabled {
+  background-color: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background-color: var(--danger);
+}
+
+.btn-danger:hover {
+  background-color: #842f24;
+}
+
+/* A row of buttons and links, like Edit / Delete / Back */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Links inside an actions row look like outlined buttons */
+.actions a {
+  padding: 9px 18px;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  color: var(--gold-dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.actions a:hover {
+  background-color: var(--gold);
+  color: white;
+}
+
+/* Error messages */
+.error {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.error:empty {
+  display: none;
+}

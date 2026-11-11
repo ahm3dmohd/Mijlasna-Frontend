@@ -58,7 +58,7 @@ function VenueDetailsPage({ user }) {
       <p>Capacity: {venue.capacity}</p>
       <p>Weekday Price: {venue.weekDayPrice}</p>
       <p>Weekend Price: {venue.weekendPrice}</p>
-
+      
       <div className="actions">
         {user && user.role === "customer" && (
           <button onClick={() => navigate(`/venues/${id}/book`)}>Book Venue</button>
@@ -71,7 +71,15 @@ function VenueDetailsPage({ user }) {
           </>
         )}
       </div>
-
+        {venue.images && (
+        <div className="venue-image-container">
+          <img 
+            src={venue.images} 
+            alt={venue.name} 
+            style={{ maxWidth: '400px', width: '100%', height: 'auto', borderRadius: '8px' }} 
+          />
+        </div>
+      )}
     </div>
   );
 }

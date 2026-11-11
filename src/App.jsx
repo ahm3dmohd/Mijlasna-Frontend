@@ -20,8 +20,6 @@ import EditBookingPage from "./pages/bookings/EditBookingPage";
 import ManageUsersPage from "./pages/Admin/ManageUsersPage";
 import UserDetailsPage from "./pages/Admin/UserDetailsPage";
 import EditUserPage from "./pages/Admin/EditUserPage";
-import CreateBooking from "./pages/bookings/CreateBooking"
-import OwnerVenuesBooking from "./pages/bookings/OwnerVenuesBooking"
 
 
 

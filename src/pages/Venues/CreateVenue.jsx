@@ -1,20 +1,27 @@
 import { useState } from 'react'
 import { createVenue } from '../../services/venueService';
-import {useNavigate} from 'react-router'
+import { useNavigate } from 'react-router'
 
 function CreateVenue() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-            name: "",
-            type: "",
-            description: "",
-            address: "",
-            capacity: "",
-            images: "",
-            weekendPrice: "",
-            weekDayPrice: "",
+        name: "",
+        type: "",
+        description: "",
+        address: "",
+        capacity: "",
+        images: "",
+        weekendPrice: "",
+        weekDayPrice: "",
     });
     const [error, setError] = useState("");
+
+    const [imageFile, setImageFile] = useState(null);
+
+    function handleFileChange(e) {
+        setImageFile(e.target.files[0]);
+    }
+
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +30,19 @@ function CreateVenue() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            await createVenue(formData);
+            const data = new FormData();
+            for (const key in formData) {
+                data.append(key, formData[key]);
+            }
+
+            // 2. Attach the image file if the user selected one
+            // ('image' matches upload.single('image') on your backend route)
+            if (imageFile) {
+                data.append('image', imageFile);
+            }
+
+            // 3. Send everything in one single request
+            await createVenue(data);
             navigate("/venues");
         } catch (err) {
             setError(err?.response?.data?.message || "Failed to create venue.");
@@ -100,6 +119,15 @@ function CreateVenue() {
                     onChange={handleChange}
                     value={formData.weekendPrice}
                     required
+                />
+
+                <label htmlFor="image">Venue Image:</label>
+                <input
+                    type="file"
+                    name="image"
+                    id="image"
+                    accept="image/*"
+                    onChange={handleFileChange}
                 />
 
                 <button type="submit">Create Venue</button>

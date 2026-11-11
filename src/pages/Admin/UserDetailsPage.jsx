@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 import { getUserById, deleteUser } from "../../services/userService";
 
 
@@ -23,7 +23,7 @@ function UserDetailsPage() {
   }, [id]);
 
   async function handleDelete() {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Are you sure you want to delete this user? Their venues, bookings and reviews are deleted too.")) return;
     try {
       await deleteUser(id);
       navigate("/users");
@@ -37,32 +37,52 @@ function UserDetailsPage() {
   }
 
   if (!user) {
-    return (
-      <div>
-        <p>Loading...</p>
-      </div>
-    );
+    return <p>Loading...</p>;
   }
 
   return (
-    <div>
+    <main>
 
-        <h1>User Details</h1>
-        <p className="error">{error}</p>
+      <h1>User Details</h1>
+      <p className="error">{error}</p>
 
-      <h2>Username: {user.username}</h2>
-      <p>Email: {user.email}</p>
-      <p>Phone: {user.phone || "N/A"}</p>
-      <p>Role: {user.role}</p>
-      <p>Created At: {new Date(user.createdAt).toLocaleString()}</p>
-      <p>Updated At: {new Date(user.updatedAt).toLocaleString()}</p>
+      <div className="card details">
+        <div className="profile-head">
+          {/* the first letter of the username in a circle */}
+          <div className="avatar" aria-hidden="true">{user.username.charAt(0).toUpperCase()}</div>
+          <div>
+            <h2>{user.username}</h2>
+            <span className="badge">{user.role}</span>
+          </div>
+        </div>
 
-      <div className="actions">
-        <button onClick={() => navigate(`/users/${id}/edit`)}>Edit User</button>
-        <button className="btn-danger" onClick={handleDelete}>Delete User</button>
+        <dl className="detail-list">
+          <div>
+            <dt>Email</dt>
+            <dd>{user.email}</dd>
+          </div>
+          <div>
+            <dt>Phone</dt>
+            <dd>{user.phone || "N/A"}</dd>
+          </div>
+          <div>
+            <dt>Created</dt>
+            <dd>{new Date(user.createdAt).toLocaleString()}</dd>
+          </div>
+          <div>
+            <dt>Updated</dt>
+            <dd>{new Date(user.updatedAt).toLocaleString()}</dd>
+          </div>
+        </dl>
+
+        <div className="actions">
+          <Link to={`/users/${id}/edit`}>Edit</Link>
+          <button className="btn-danger" onClick={handleDelete}>Delete</button>
+          <Link to="/users">Back</Link>
+        </div>
       </div>
 
-    </div>
+    </main>
   )
 }
 

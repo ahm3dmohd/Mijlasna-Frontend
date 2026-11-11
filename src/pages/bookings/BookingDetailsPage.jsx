@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
-import { getBookingById, updateBookingStatus, deleteBooking } from '../../services/bookingService'
+import { getBookingById, updateBookingStatus, deleteBooking, checkoutBooking } from '../../services/bookingService'
 
-function BookingDetailsPage() {
+function BookingDetailsPage({ user }) {
   const { id } = useParams()
   const navigate = useNavigate()
   const [booking, setBooking] = useState(null)
@@ -20,9 +20,20 @@ function BookingDetailsPage() {
     loadBooking()
   }, [id])
 
+  async function handleCheckout() {
+    try {
+      setError('')
+      const paidBooking = await checkoutBooking(id)
+      setBooking({ ...booking, deposit: paidBooking.deposit })
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Failed to checkout.')
+    }
+  }
+
   async function handleCancel() {
     if (!window.confirm('Are you sure you want to cancel this booking?')) return
     try {
+      setError('')
       const updatedBooking = await updateBookingStatus(id, 'cancelled')
       setBooking({ ...booking, status: updatedBooking.status })
     } catch (err) {
@@ -43,6 +54,15 @@ function BookingDetailsPage() {
   if (!booking && error) return <p className='error'>{error}</p>
   if (!booking) return <p>Loading...</p>
 
+  const isActive = booking.status === 'pending' || booking.status === 'confirmed'
+  // the checkout route only accepts the customer who made the booking
+  const isCustomer = booking.customer && booking.customer._id === user._id
+  const isAdmin = user.role === 'admin'
+
+  // Checkout comes first. Once the booking is checked out, it is replaced by Cancel.
+  const showCheckout = isCustomer && isActive && !booking.deposit
+  const showCancel = isActive && ((isCustomer && booking.deposit) || isAdmin)
+
   return (
     <main>
       <h1>Booking Details</h1>
@@ -55,9 +75,16 @@ function BookingDetailsPage() {
         </div>
 
         <dl className='detail-list'>
+          {/* owners and admins see who made the booking */}
+          {!isCustomer && booking.customer && (
+            <div>
+              <dt>Customer</dt>
+              <dd>{booking.customer.username}</dd>
+            </div>
+          )}
           <div>
             <dt>Date</dt>
-            <dd>{new Date(booking.date).toLocaleDateString()}</dd>
+            <dd>{new Date(booking.date).toLocaleDateString(undefined, { timeZone: 'UTC' })}</dd>
           </div>
           <div>
             <dt>Time</dt>
@@ -79,10 +106,16 @@ function BookingDetailsPage() {
 
         <div className='actions'>
           <Link to={`/bookings/${booking._id}/edit`}>Edit</Link>
-          {(booking.status === 'pending' || booking.status === 'confirmed') && (
+          {showCheckout && (
+            <button onClick={handleCheckout}>Checkout</button>
+          )}
+          {showCancel && (
             <button onClick={handleCancel}>Cancel Booking</button>
           )}
-          <button className='btn-danger' onClick={handleDelete}>Delete</button>
+          {/* no escape before checkout: Delete only appears once the booking is checked out */}
+          {booking.deposit && (
+            <button className='btn-danger' onClick={handleDelete}>Delete</button>
+          )}
           <Link to='/bookings'>Back</Link>
         </div>
       </div>

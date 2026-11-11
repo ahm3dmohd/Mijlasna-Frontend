@@ -11,6 +11,7 @@ import VenuesPage from "./pages/Venues/VenuesPage";
 import VenueDetailsPage from "./pages/Venues/VenueDetailsPage";
 import CreateVenue from "./pages/Venues/CreateVenue";
 import EditVenue from "./pages/Venues/EditVenue";
+import BlockedDateForm from "./pages/Venues/BlockedDateForm";
 import CreateBooking from "./pages/bookings/CreateBooking";
 import OwnerVenuesBooking from "./pages/bookings/OwnerVenuesBooking";
 import { logout } from "./services/authService";
@@ -54,19 +55,26 @@ function App() {
     setUser(null);
   }
 
+  // owners and admins manage venues (the backend also checks that the venue is theirs)
+  const canManageVenues = user && (user.role === "owner" || user.role === "admin");
+
   return (
     <div className="app">
       <Navbar user={user} handleLogout={handleLogout} />
       <div className="container">
       <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/sign-up" element={<SignupPage />} />
-        <Route path="/sign-in" element={<SignInPage setUser={setUser} />} />
+        <Route path="/" element={<Homepage user={user} />} />
+        <Route path="/sign-up" element={user ? <Navigate to="/dashboard" /> : <SignupPage />} />
+        <Route path="/sign-in" element={user ? <Navigate to="/dashboard" /> : <SignInPage setUser={setUser} />} />
         <Route path="/venues" element={<VenuesPage user={user} />} />
-        <Route path="/venues/new" element={user && (user.role === "owner" || user.role === "admin") ? <CreateVenue /> : <Navigate to="/sign-in" />}
+        <Route path="/venues/new" element={canManageVenues ? <CreateVenue /> : <Navigate to="/sign-in" />}
         />
         <Route path="/venues/:id" element={<VenueDetailsPage user={user} />} />
-        <Route path="/venues/:id/edit" element={user && (user.role === "owner" || user.role === "admin") ? <EditVenue /> : <Navigate to="/sign-in" />}
+        <Route path="/venues/:id/edit" element={canManageVenues ? <EditVenue user={user} /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/venues/:id/blocked-dates/new" element={canManageVenues ? <BlockedDateForm user={user} /> : <Navigate to="/sign-in" />}
+        />
+        <Route path="/venues/:id/blocked-dates/:bid/edit" element={canManageVenues ? <BlockedDateForm user={user} /> : <Navigate to="/sign-in" />}
         />
         <Route path="/venues/:id/book" element={user ? <CreateBooking /> : <Navigate to="/sign-in" />}
         />
@@ -78,11 +86,11 @@ function App() {
         />
         <Route path="/me" element={user ? <MyProfile handleLogout={handleLogout} /> : <Navigate to="/sign-in" />}
         />
-        <Route path="/me/edit" element={user ? <EditProfile /> : <Navigate to="/sign-in" />}
+        <Route path="/me/edit" element={user ? <EditProfile handleLogout={handleLogout} /> : <Navigate to="/sign-in" />}
         />
         <Route path="/bookings" element={user ? <MyBookingsPage /> : <Navigate to="/sign-in" />}
         />
-        <Route path="/bookings/:id" element={user ? <BookingDetailsPage /> : <Navigate to="/sign-in" />}
+        <Route path="/bookings/:id" element={user ? <BookingDetailsPage user={user} /> : <Navigate to="/sign-in" />}
         />
         <Route path="/bookings/:id/edit" element={user ? <EditBookingPage /> : <Navigate to="/sign-in" />}
         />
@@ -96,7 +104,7 @@ function App() {
         />
         <Route
           path="/users/:id/edit"
-          element={user && user.role === "admin" ? <EditUserPage /> : <Navigate to="/" />}
+          element={user && user.role === "admin" ? <EditUserPage user={user} handleLogout={handleLogout} /> : <Navigate to="/" />}
         />
       </Routes>
       </div>

@@ -1,12 +1,16 @@
 import { Link } from 'react-router'
 import MajlisArt from '../components/MajlisArt'
 
-function Homepage() {
+function Homepage({ user }) {
   return (
     <div>
       <section className='hero'>
         <div className='hero-text'>
-          <span className='eyebrow'><span lang='ar'>أهلاً وسهلاً</span> · Welcome</span>
+          {user ? (
+            <span className='eyebrow'><span lang='ar'>مرحباً بك</span> · Welcome {user.username}</span>
+          ) : (
+            <span className='eyebrow'><span lang='ar'>أهلاً وسهلاً</span> · Welcome</span>
+          )}
           <h1>Gather where it feels like <span>home</span>.</h1>
           <p>
             Mijlasna helps you find and book a majlis, diwaniya, hall or pool house
@@ -15,7 +19,12 @@ function Homepage() {
           </p>
           <div className='actions'>
             <Link to='/venues' className='btn'>Browse Venues</Link>
-            <Link to='/sign-up' className='btn-secondary'>Create an Account</Link>
+            {/* signed in users do not need the sign up button */}
+            {user ? (
+              <Link to='/dashboard' className='btn-secondary'>Go to Dashboard</Link>
+            ) : (
+              <Link to='/sign-up' className='btn-secondary'>Create an Account</Link>
+            )}
           </div>
         </div>
         <div className='hero-art'>
@@ -72,13 +81,16 @@ function Homepage() {
         </ol>
       </section>
 
-      <section className='banner'>
-        <div>
-          <h2>Own a venue?</h2>
-          <p>Sign up as a venue owner to manage your venues and their bookings.</p>
-        </div>
-        <Link to='/sign-up' className='btn btn-light'>Sign Up as an Owner</Link>
-      </section>
+      {/* the "sign up as an owner" banner is only for visitors */}
+      {!user && (
+        <section className='banner'>
+          <div>
+            <h2>Own a venue?</h2>
+            <p>Sign up as a venue owner to manage your venues and their bookings.</p>
+          </div>
+          <Link to='/sign-up' className='btn btn-light'>Sign Up as an Owner</Link>
+        </section>
+      )}
     </div>
   )
 }

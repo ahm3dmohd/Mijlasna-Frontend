@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { getMe, updateMe } from '../services/userService';
+import PasswordFields from '../components/PasswordFields';
 
-function EditProfile() {
+function EditProfile({ handleLogout }) {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
-        phone: ''
+        phone: '',
+        password: '',
+        passwordConf: ''
     });
     const [error, setError] = useState('')
 
@@ -16,11 +19,12 @@ function EditProfile() {
         async function loadUser() {
             try {
                 const user = await getMe()
-                setFormData({
+                setFormData((current) => ({
+                    ...current,
                     username: user.username,
                     email: user.email,
                     phone: user.phone
-                })
+                }))
             } catch (err) {
                 setError(err?.response?.data?.message || "Failed to load profile.")
             }
@@ -29,14 +33,25 @@ function EditProfile() {
     }, [])
 
     const handleChange = (e) => {
+        setError('')
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const { password, passwordConf, ...profile } = formData
+
+        if (password !== passwordConf) {
+            setError('Passwords do not match.')
+            return
+        }
+
         try {
-            await updateMe(formData);
-            navigate('/me')
+            // the password is only sent when a new one was typed
+            await updateMe(password ? { ...profile, password } : profile);
+            // the sign in token still holds the old details, so sign in again
+            handleLogout()
+            navigate('/sign-in')
         } catch (err) {
             setError(err?.response?.data?.message || "Failed to update profile.");
 
@@ -45,14 +60,15 @@ function EditProfile() {
 
     return (
         <div>
-            <h2>Edit Profile</h2>
+            <h1>Edit Profile</h1>
             <p className='error'>{error}</p>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Username:</label>
+                    <label htmlFor='username'>Username:</label>
                     <input
                         type="text"
                         name="username"
+                        id="username"
                         value={formData.username}
                         onChange={handleChange}
                         required
@@ -60,10 +76,11 @@ function EditProfile() {
                 </div>
 
                 <div>
-                    <label>Email:</label>
+                    <label htmlFor='email'>Email:</label>
                     <input
                         type="email"
                         name="email"
+                        id="email"
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -71,14 +88,24 @@ function EditProfile() {
                 </div>
 
                 <div>
-                    <label>Phone:</label>
+                    <label htmlFor='phone'>Phone:</label>
                     <input
                         type="text"
                         name="phone"
+                        id="phone"
                         value={formData.phone}
                         onChange={handleChange}
                     />
                 </div>
+
+                <PasswordFields
+                    password={formData.password}
+                    passwordConf={formData.passwordConf}
+                    onChange={handleChange}
+                    passwordLabel='New Password:'
+                    confirmLabel='Confirm New Password:'
+                />
+                <p className='field-hint'>Leave the password empty to keep your current one.</p>
 
                 <div className='actions'>
                     <button type="submit">Save Changes

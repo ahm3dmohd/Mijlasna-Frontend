@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { signUp } from "../services/authService";
+import PasswordFields from "../components/PasswordFields";
 
 function Signup() {
   const navigate = useNavigate();
@@ -26,6 +27,10 @@ function Signup() {
 
   async function handleSubmit(event){
     event.preventDefault();
+    if (password !== passwordConf) {
+      setError("Passwords do not match.");
+      return;
+    }
     try {
       setSubmitting(true)
       await signUp(formData);
@@ -85,28 +90,12 @@ function Signup() {
             <option value="owner">Venue owner</option>
           </select>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            name="password"
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="confirm">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirm"
-            value={passwordConf}
-            name="passwordConf"
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <PasswordFields
+          password={password}
+          passwordConf={passwordConf}
+          onChange={handleChange}
+          required
+        />
         <div className="actions">
           <button disabled={isFormInvalid() || submitting}>{submitting ? 'Signing up...' : 'Sign Up'}</button>
           <button type="button" className="btn-secondary" onClick={() => navigate("/")}>Cancel</button>

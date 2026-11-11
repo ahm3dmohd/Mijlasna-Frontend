@@ -38,6 +38,7 @@ function Navbar({ user, handleLogout }) {
           (<>
             <NavLink to='/dashboard'>Dashboard</NavLink>
             <NavLink to='/bookings'>My Bookings</NavLink>
+            {user.role === 'admin' && <NavLink to='/users'>Manage Users</NavLink>}
             <NavLink to='/me'>Profile</NavLink>
             <button onClick={handleLogout}>Sign Out</button>
           </>) :

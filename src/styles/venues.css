@@ -1,0 +1,91 @@
+/* Venue pages: the venue image, blocked dates and reviews */
+
+/* ---------- Venue image ---------- */
+
+/* On the details page: fills the card, always the same shape, centered */
+.venue-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 340px;
+  margin: 0 auto 20px;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+}
+
+/* In the edit form: a small preview of the current or the newly chosen image */
+.image-preview {
+  display: block;
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+}
+
+.field-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Sections under the venue (blocked dates, reviews) ---------- */
+
+.venue-section {
+  margin-top: 44px;
+}
+
+.venue-section .page-head {
+  margin-bottom: 16px;
+}
+
+.venue-section .page-head h2 {
+  margin: 0;
+}
+
+.info-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.info-item {
+  padding: 18px 20px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--red);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.info-item p {
+  margin: 4px 0;
+  overflow-wrap: anywhere;
+}
+
+.info-item .card-head {
+  margin-bottom: 6px;
+}
+
+.info-item .actions {
+  margin-top: 12px;
+}
+
+.info-item .actions > * {
+  min-height: 40px;
+}
+
+/* the stars of a review */
+.rating {
+  color: var(--gold);
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+}
+
+.review-form {
+  margin-top: 24px;
+}

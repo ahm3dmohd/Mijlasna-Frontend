@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router';
-import { getMe, deleteMe } from '../services/userService';
+import { Link, useNavigate } from 'react-router'
+import { getMe, deleteMe } from '../services/userService'
 
 function MyProfile({ handleLogout }) {
   const navigate = useNavigate()
@@ -20,15 +20,15 @@ function MyProfile({ handleLogout }) {
   }, [])
 
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete your account?")) return;
+    if (!window.confirm("Are you sure you want to delete your account?")) return
     try {
-      await deleteMe();
+      await deleteMe()
       handleLogout()
       navigate('/')
     } catch (err) {
-      setError(err?.response?.data?.message || "Failed to delete account.");
+      setError(err?.response?.data?.message || "Failed to delete account.")
     }
-  };
+  }
 
   if (error) return <p className='error'>{error}</p>
   if (!user) return <p>Loading...</p>
@@ -39,7 +39,6 @@ function MyProfile({ handleLogout }) {
 
       <div className='card details'>
         <div className='profile-head'>
-          {/* the first letter of the username in a circle */}
           <div className='avatar' aria-hidden='true'>{user.username.charAt(0).toUpperCase()}</div>
           <div>
             <h2>{user.username}</h2>
@@ -70,7 +69,7 @@ function MyProfile({ handleLogout }) {
         </div>
       </div>
     </main>
-  );
+  )
 }
 
 export default MyProfile

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { ownerGetBookings, updateBookingStatus } from '../../services/bookingService';
+import { ownerGetBookings, updateBookingStatus, deleteBooking } from '../../services/bookingService'
 
-// What the owner can do next, for each status (the backend allows confirmed, rejected and completed)
 const NEXT_STATUS = {
   pending: [
     { status: 'confirmed', label: 'Confirm' },
@@ -19,36 +18,47 @@ const NEXT_STATUS = {
 
 function OwnerVenuesBooking() {
 
-  const [bookings, setBookings] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [bookings, setBookings] = useState([])
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function getBookings() {
       try {
-        const res = await ownerGetBookings();
-        setBookings(res);
+        const res = await ownerGetBookings()
+        setBookings(res)
       } catch (err) {
-        setError(err?.response?.data?.message || "Failed to load bookings.");
+        setError(err?.response?.data?.message || "Failed to load bookings.")
       }
-      setLoading(false);
+      setLoading(false)
     }
-    getBookings();
-  }, []);
+    getBookings()
+  }, [])
 
   async function changeStatus(bookingId, status) {
     try {
-      setError("");
-      const updated = await updateBookingStatus(bookingId, status);
+      setError("")
+      const updated = await updateBookingStatus(bookingId, status)
       setBookings((current) =>
         current.map((one) => (one._id === bookingId ? { ...one, status: updated.status } : one))
-      );
+      )
     } catch (err) {
-      setError(err?.response?.data?.message || "Failed to update the booking.");
+      setError(err?.response?.data?.message || "Failed to update the booking.")
     }
   }
 
-  if (loading) return <p>Loading...</p>;
+  async function handleDelete(bookingId) {
+    if (!window.confirm("Are you sure you want to delete this booking?")) return
+    try {
+      setError("")
+      await deleteBooking(bookingId)
+      setBookings((current) => current.filter((one) => one._id !== bookingId))
+    } catch (err) {
+      setError(err?.response?.data?.message || "Failed to delete the booking.")
+    }
+  }
+
+  if (loading) return <p>Loading...</p>
 
   return (
     <main>
@@ -84,6 +94,7 @@ function OwnerVenuesBooking() {
                   {next.label}
                 </button>
               ))}
+              <button className="btn-danger" onClick={() => handleDelete(oneBooking._id)}>Delete</button>
               <Link to={`/bookings/${oneBooking._id}`}>See Details</Link>
             </div>
           </div>
@@ -91,7 +102,7 @@ function OwnerVenuesBooking() {
       </div>
 
     </main>
-  );
+  )
 }
 
 export default OwnerVenuesBooking

@@ -15,7 +15,6 @@ async function deleteMe() {
     return response.data
 }
 
-// admin only
 async function getAllUsers() {
     const response = await api.get('/users')
     return response.data

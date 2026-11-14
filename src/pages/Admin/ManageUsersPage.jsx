@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import { getAllUsers } from "../../services/userService";
+import { useEffect, useState } from "react"
+import { Link } from "react-router"
+import { getAllUsers } from "../../services/userService"
 
 function ManageUsersPage() {
 
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([])
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function getUsers() {
       try {
-        const res = await getAllUsers();
-        setUsers(res);
+        const res = await getAllUsers()
+        setUsers(res)
       } catch (err) {
-        setError(err?.response?.data?.message || "Failed to load users.");
+        setError(err?.response?.data?.message || "Failed to load users.")
       }
-      setLoading(false);
+      setLoading(false)
     }
-    getUsers();
-  }, []);
+    getUsers()
+  }, [])
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>
 
   return (
     <main>

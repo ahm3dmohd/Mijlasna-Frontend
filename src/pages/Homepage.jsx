@@ -19,7 +19,6 @@ function Homepage({ user }) {
           </p>
           <div className='actions'>
             <Link to='/venues' className='btn'>Browse Venues</Link>
-            {/* signed in users do not need the sign up button */}
             {user ? (
               <Link to='/dashboard' className='btn-secondary'>Go to Dashboard</Link>
             ) : (
@@ -81,7 +80,6 @@ function Homepage({ user }) {
         </ol>
       </section>
 
-      {/* the "sign up as an owner" banner is only for visitors */}
       {!user && (
         <section className='banner'>
           <div>

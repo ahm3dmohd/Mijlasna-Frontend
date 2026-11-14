@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { createVenue } from '../../services/venueService';
+import { createVenue } from '../../services/venueService'
 import { useNavigate } from 'react-router'
 
 function CreateVenue() {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         name: "",
         type: "",
@@ -13,39 +13,36 @@ function CreateVenue() {
         images: "",
         weekendPrice: "",
         weekDayPrice: "",
-    });
-    const [error, setError] = useState("");
+    })
+    const [error, setError] = useState("")
 
-    const [imageFile, setImageFile] = useState(null);
+    const [imageFile, setImageFile] = useState(null)
 
     function handleFileChange(e) {
-        setImageFile(e.target.files[0]);
+        setImageFile(e.target.files[0])
     }
 
 
     function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     async function handleSubmit(e) {
-        e.preventDefault();
+        e.preventDefault()
         try {
-            const data = new FormData();
+            const data = new FormData()
             for (const key in formData) {
-                data.append(key, formData[key]);
+                data.append(key, formData[key])
             }
 
-            // 2. Attach the image file if the user selected one
-            // ('image' matches upload.single('image') on your backend route)
             if (imageFile) {
-                data.append('image', imageFile);
+                data.append('image', imageFile)
             }
 
-            // 3. Send everything in one single request
-            await createVenue(data);
-            navigate("/venues");
+            await createVenue(data)
+            navigate("/venues")
         } catch (err) {
-            setError(err?.response?.data?.message || "Failed to create venue.");
+            setError(err?.response?.data?.message || "Failed to create venue.")
         }
     }
 

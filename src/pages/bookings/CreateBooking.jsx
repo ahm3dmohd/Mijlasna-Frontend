@@ -1,29 +1,29 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { createBooking } from '../../services/bookingService';
+import { createBooking } from '../../services/bookingService'
 
 function CreateBooking() {
-    const { id } = useParams();
-    const navigate = useNavigate();
+    const { id } = useParams()
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         date: "",
         timeOfDay: "",
         notes: ""
-    });
-    const [error, setError] = useState("");
+    })
+    const [error, setError] = useState("")
 
     function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     async function handleSubmit(e) {
-        e.preventDefault();
+        e.preventDefault()
         try {
-            await createBooking(id, formData);
-            navigate("/bookings");
+            await createBooking(id, formData)
+            navigate("/bookings")
         } catch (err) {
-            setError(err?.response?.data?.message || "Failed to create booking.");
+            setError(err?.response?.data?.message || "Failed to create booking.")
         }
     }
 

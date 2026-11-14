@@ -17,7 +17,6 @@ function EditBookingPage() {
       try {
         const booking = await getBookingById(id)
         setFormData({
-          // the date input needs the format YYYY-MM-DD
           date: booking.date.slice(0, 10),
           timeOfDay: booking.timeOfDay,
           notes: booking.notes || '',

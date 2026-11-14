@@ -1,34 +1,32 @@
-// src/components/SignInForm/SignInForm.jsx
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router'
 
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
-
-import { signIn } from '../services/authService';
+import { signIn } from '../services/authService'
 
 
 const SignInForm = ({ setUser }) => {
-  const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const navigate = useNavigate()
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     username: '',
     password: '',
-  });
+  })
 
-  function handleChange(event){
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  function handleChange(event) {
+    setFormData({ ...formData, [event.target.name]: event.target.value })
   }
 
-  async function handleSubmit(event){
-    event.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault()
     try {
-      const signedInUser = await signIn(formData);
+      const signedInUser = await signIn(formData)
 
-      setUser(signedInUser);
-      navigate('/dashboard');
+      setUser(signedInUser)
+      navigate('/dashboard')
     } catch (err) {
-      setError(err?.response?.data?.message || 'Unable to sign in. Please try again.');
+      setError(err?.response?.data?.message || 'Unable to sign in. Please try again.')
     }
-  };
+  }
 
   return (
     <main className='auth'>
@@ -66,7 +64,7 @@ const SignInForm = ({ setUser }) => {
       </form>
       <p className='auth-note'>No account yet? <Link to='/sign-up'>Sign up</Link></p>
     </main>
-  );
-};
+  )
+}
 
-export default SignInForm;
+export default SignInForm

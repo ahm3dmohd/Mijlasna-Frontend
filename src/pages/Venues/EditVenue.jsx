@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { editVenue, getVenueById } from '../../services/venueService';
+import { editVenue, getVenueById } from '../../services/venueService'
 
 function EditVenue({ user }) {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const { id } = useParams()
     const [formData, setFormData] = useState({
         name: "",
@@ -13,22 +13,20 @@ function EditVenue({ user }) {
         capacity: "",
         weekendPrice: "",
         weekDayPrice: "",
-    });
-    const [error, setError] = useState("");
+    })
+    const [error, setError] = useState("")
 
-    // the image already saved on the venue, and a new one the user may choose
-    const [currentImage, setCurrentImage] = useState("");
-    const [imageFile, setImageFile] = useState(null);
-    const [preview, setPreview] = useState("");
+    const [currentImage, setCurrentImage] = useState("")
+    const [imageFile, setImageFile] = useState(null)
+    const [preview, setPreview] = useState("")
 
     useEffect(() => {
         async function getVenue() {
             try {
-                const res = await getVenueById(id);
-                // only the venue's owner and admins can edit it
+                const res = await getVenueById(id)
                 if (user.role !== "admin" && res.owner !== user._id) {
-                    navigate(`/venues/${id}`, { replace: true });
-                    return;
+                    navigate(`/venues/${id}`, { replace: true })
+                    return
                 }
                 setFormData({
                     name: res.name,
@@ -38,49 +36,45 @@ function EditVenue({ user }) {
                     capacity: res.capacity,
                     weekendPrice: res.weekendPrice,
                     weekDayPrice: res.weekDayPrice,
-                });
-                setCurrentImage(res.images || "");
+                })
+                setCurrentImage(res.images || "")
             } catch (err) {
-                setError(err?.response?.data?.message || "Failed to load venue.");
+                setError(err?.response?.data?.message || "Failed to load venue.")
             }
         }
-        getVenue();
-    }, [id, user, navigate]);
+        getVenue()
+    }, [id, user, navigate])
 
     function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    // show the chosen file as a preview before it is uploaded
     function handleFileChange(e) {
-        const file = e.target.files[0] || null;
-        if (preview) URL.revokeObjectURL(preview);
-        setImageFile(file);
-        setPreview(file ? URL.createObjectURL(file) : "");
+        const file = e.target.files[0] || null
+        if (preview) URL.revokeObjectURL(preview)
+        setImageFile(file)
+        setPreview(file ? URL.createObjectURL(file) : "")
     }
 
     async function handleSubmit(e) {
-        e.preventDefault();
+        e.preventDefault()
         try {
-            // multipart form data, so the image file can travel with the fields
-            const data = new FormData();
+            const data = new FormData()
             for (const key in formData) {
-                data.append(key, formData[key]);
+                data.append(key, formData[key])
             }
-            // 'image' matches upload.single('image') on the backend route.
-            // No new file = the backend keeps the current image.
             if (imageFile) {
-                data.append('image', imageFile);
+                data.append('image', imageFile)
             }
 
-            await editVenue(id, data);
-            navigate(`/venues/${id}`);
+            await editVenue(id, data)
+            navigate(`/venues/${id}`)
         } catch (err) {
-            setError(err?.response?.data?.message || "Failed to update venue.");
+            setError(err?.response?.data?.message || "Failed to update venue.")
         }
     }
 
-    const shownImage = preview || currentImage;
+    const shownImage = preview || currentImage
 
     return (
         <div>

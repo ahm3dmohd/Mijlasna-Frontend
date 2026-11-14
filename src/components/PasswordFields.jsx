@@ -1,5 +1,3 @@
-// Password + confirm password inputs, shared by sign up, edit profile and edit user.
-// Shows "Passwords do not match." under the confirm field while they differ.
 function PasswordFields({
   password,
   passwordConf,
@@ -34,7 +32,6 @@ function PasswordFields({
           value={passwordConf}
           onChange={onChange}
           autoComplete='new-password'
-          // when a new password is typed, it has to be confirmed
           required={required || password !== ''}
         />
         {mismatch && <p className='error' role='alert'>Passwords do not match.</p>}

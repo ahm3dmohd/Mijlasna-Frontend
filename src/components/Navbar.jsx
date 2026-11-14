@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router'
 
 function Navbar({ user, handleLogout }) {
-  // on phones the links are hidden until the menu button is pressed
   const [menuOpen, setMenuOpen] = useState(false)
 
   function closeMenu() {
@@ -29,23 +28,23 @@ function Navbar({ user, handleLogout }) {
           <span></span>
         </button>
 
-        {/* NavLink is like Link, but it adds the class "active" on the current page */}
         <div className={menuOpen ? 'nav-links open' : 'nav-links'} onClick={closeMenu}>
           <NavLink to='/' end>Home</NavLink>
           <NavLink to='/venues'>Venues</NavLink>
           {user
-          ?
-          (<>
-            <NavLink to='/dashboard'>Dashboard</NavLink>
-            <NavLink to='/bookings'>My Bookings</NavLink>
-            {user.role === 'admin' && <NavLink to='/users'>Manage Users</NavLink>}
-            <NavLink to='/me'>Profile</NavLink>
-            <button onClick={handleLogout}>Sign Out</button>
-          </>) :
-          (<>
-            <NavLink to='/sign-up'>Sign Up</NavLink>
-            <NavLink to='/sign-in'>Sign In</NavLink>
-          </>)}
+            ?
+            (<>
+              <NavLink to='/dashboard'>Dashboard</NavLink>
+              <NavLink to='/bookings'>My Bookings</NavLink>
+              {user.role === 'owner' && <NavLink to='/owner/bookings'>Venue Bookings</NavLink>}
+              {user.role === 'admin' && <NavLink to='/users'>Manage Users</NavLink>}
+              <NavLink to='/me'>Profile</NavLink>
+              <button onClick={handleLogout}>Sign Out</button>
+            </>) :
+            (<>
+              <NavLink to='/sign-up'>Sign Up</NavLink>
+              <NavLink to='/sign-in'>Sign In</NavLink>
+            </>)}
         </div>
       </nav>
       <div className='sadu-band' aria-hidden='true'></div>

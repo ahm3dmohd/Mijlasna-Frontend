@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
-import { getMe, updateMe } from '../services/userService';
-import PasswordFields from '../components/PasswordFields';
+import { getMe, updateMe } from '../services/userService'
+import PasswordFields from '../components/PasswordFields'
 
 function EditProfile({ handleLogout }) {
     const [formData, setFormData] = useState({
@@ -10,7 +10,7 @@ function EditProfile({ handleLogout }) {
         phone: '',
         password: '',
         passwordConf: ''
-    });
+    })
     const [error, setError] = useState('')
 
     const navigate = useNavigate()
@@ -34,11 +34,11 @@ function EditProfile({ handleLogout }) {
 
     const handleChange = (e) => {
         setError('')
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         const { password, passwordConf, ...profile } = formData
 
         if (password !== passwordConf) {
@@ -47,13 +47,11 @@ function EditProfile({ handleLogout }) {
         }
 
         try {
-            // the password is only sent when a new one was typed
-            await updateMe(password ? { ...profile, password } : profile);
-            // the sign in token still holds the old details, so sign in again
+            await updateMe(password ? { ...profile, password } : profile)
             handleLogout()
             navigate('/sign-in')
         } catch (err) {
-            setError(err?.response?.data?.message || "Failed to update profile.");
+            setError(err?.response?.data?.message || "Failed to update profile.")
 
         }
     }
@@ -116,7 +114,7 @@ function EditProfile({ handleLogout }) {
                 </div>
             </form>
         </div>
-    );
+    )
 }
 
 export default EditProfile

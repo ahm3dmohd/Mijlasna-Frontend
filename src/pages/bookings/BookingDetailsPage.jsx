@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { getBookingById, updateBookingStatus, deleteBooking, checkoutBooking } from '../../services/bookingService'
 
+function getBackPath(booking, user) {
+  const isCustomer = booking.customer && booking.customer._id === user._id
+  return user.role === 'owner' && !isCustomer ? '/owner/bookings' : '/bookings'
+}
+
 function BookingDetailsPage({ user }) {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -45,7 +50,7 @@ function BookingDetailsPage({ user }) {
     if (!window.confirm('Are you sure you want to delete this booking?')) return
     try {
       await deleteBooking(id)
-      navigate('/bookings')
+      navigate(getBackPath(booking, user))
     } catch (err) {
       setError(err?.response?.data?.message || 'Failed to delete booking.')
     }
@@ -55,11 +60,9 @@ function BookingDetailsPage({ user }) {
   if (!booking) return <p>Loading...</p>
 
   const isActive = booking.status === 'pending' || booking.status === 'confirmed'
-  // the checkout route only accepts the customer who made the booking
   const isCustomer = booking.customer && booking.customer._id === user._id
   const isAdmin = user.role === 'admin'
 
-  // Checkout comes first. Once the booking is checked out, it is replaced by Cancel.
   const showCheckout = isCustomer && isActive && !booking.deposit
   const showCancel = isActive && ((isCustomer && booking.deposit) || isAdmin)
 
@@ -75,7 +78,6 @@ function BookingDetailsPage({ user }) {
         </div>
 
         <dl className='detail-list'>
-          {/* owners and admins see who made the booking */}
           {!isCustomer && booking.customer && (
             <div>
               <dt>Customer</dt>
@@ -112,11 +114,10 @@ function BookingDetailsPage({ user }) {
           {showCancel && (
             <button onClick={handleCancel}>Cancel Booking</button>
           )}
-          {/* no escape before checkout: Delete only appears once the booking is checked out */}
           {booking.deposit && (
             <button className='btn-danger' onClick={handleDelete}>Delete</button>
           )}
-          <Link to='/bookings'>Back</Link>
+          <Link to={getBackPath(booking, user)}>Back</Link>
         </div>
       </div>
     </main>

@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { getVenueById, getBlockedDates, createBlockedDate, editBlockedDate } from '../../services/venueService'
 
-// One page for both adding (/venues/:id/blocked-dates/new)
-// and editing (/venues/:id/blocked-dates/:bid/edit) a blocked date
 function BlockedDateForm({ user }) {
   const { id, bid } = useParams()
   const navigate = useNavigate()
@@ -17,7 +15,6 @@ function BlockedDateForm({ user }) {
   })
   const [error, setError] = useState('')
 
-  // only the venue's owner and admins can block dates on it
   useEffect(() => {
     async function checkOwner() {
       try {
@@ -37,7 +34,6 @@ function BlockedDateForm({ user }) {
 
     async function loadBlockedDate() {
       try {
-        // the backend has no route for one blocked date, so find it in the venue's list
         const all = await getBlockedDates(id)
         const found = all.find((one) => one._id === bid)
         if (!found) {
@@ -45,7 +41,6 @@ function BlockedDateForm({ user }) {
           return
         }
         setFormData({
-          // the date input needs the format YYYY-MM-DD
           date: found.date.slice(0, 10),
           timeOfDay: found.timeOfDay,
           reasonCategory: found.reasonCategory || 'Private Booking',
@@ -76,7 +71,6 @@ function BlockedDateForm({ user }) {
     }
   }
 
-  // the backend does not accept a date in the past
   const today = new Date().toISOString().slice(0, 10)
 
   return (

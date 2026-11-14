@@ -1,8 +1,3 @@
-/* Venue pages: the venue image, blocked dates and reviews */
-
-/* ---------- Venue image ---------- */
-
-/* On the details page: fills the card, always the same shape, centered */
 .venue-image {
   display: block;
   width: 100%;
@@ -15,7 +10,6 @@
   border-radius: var(--radius-small);
 }
 
-/* In the edit form: a small preview of the current or the newly chosen image */
 .image-preview {
   display: block;
   width: 100%;
@@ -32,8 +26,6 @@
   color: var(--muted);
   font-size: 0.9rem;
 }
-
-/* ---------- Sections under the venue (blocked dates, reviews) ---------- */
 
 .venue-section {
   margin-top: 44px;
@@ -75,11 +67,10 @@
   margin-top: 12px;
 }
 
-.info-item .actions > * {
+.info-item .actions>* {
   min-height: 40px;
 }
 
-/* the stars of a review */
 .rating {
   color: var(--gold);
   font-size: 1.15rem;

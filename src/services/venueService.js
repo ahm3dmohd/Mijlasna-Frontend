@@ -10,13 +10,11 @@ async function getVenueById(id) {
     return response.data
 }
 
-// formData here is a FormData object (it can carry the image file)
 async function createVenue(formData) {
     const response = await api.post('/venues', formData)
     return response.data
 }
 
-// formData here is a FormData object (it can carry the image file)
 async function editVenue(id, formData) {
     const response = await api.put(`/venues/${id}`, formData)
     return response.data

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router";
+import { useEffect, useState } from "react"
+import { Link, useParams, useNavigate } from "react-router"
 import {
   getVenueById,
   deleteVenue,
@@ -8,109 +8,106 @@ import {
   deleteReview,
   getBlockedDates,
   deleteBlockedDate,
-} from "../../services/venueService";
+} from "../../services/venueService"
 
-// dates are saved at midnight UTC, so they are shown in UTC too
 function formatDate(date) {
-  return new Date(date).toLocaleDateString(undefined, { timeZone: "UTC" });
+  return new Date(date).toLocaleDateString(undefined, { timeZone: "UTC" })
 }
 
 function VenueDetailsPage({ user }) {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [venue, setVenue] = useState(null);
-  const [error, setError] = useState("");
-  const [reviews, setReviews] = useState([]);
-  const [reviewError, setReviewError] = useState("");
-  const [blockedDates, setBlockedDates] = useState([]);
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [venue, setVenue] = useState(null)
+  const [error, setError] = useState("")
+  const [reviews, setReviews] = useState([])
+  const [reviewError, setReviewError] = useState("")
+  const [blockedDates, setBlockedDates] = useState([])
   const [reviewFormData, setReviewFormData] = useState({
     rating: "",
     comment: "",
-  });
+  })
 
   function reviewHandleChange(e) {
-    setReviewFormData({ ...reviewFormData, [e.target.name]: e.target.value });
+    setReviewFormData({ ...reviewFormData, [e.target.name]: e.target.value })
   }
 
   useEffect(() => {
     async function loadPage() {
       try {
-        setVenue(await getVenueById(id));
+        setVenue(await getVenueById(id))
       } catch (err) {
-        setError(err?.response?.data?.message || "Failed to load venue.");
+        setError(err?.response?.data?.message || "Failed to load venue.")
       }
       try {
-        setReviews(await getReviews(id));
+        setReviews(await getReviews(id))
       } catch (err) {
-        setReviewError(err?.response?.data?.message || "Failed to load reviews.");
+        setReviewError(err?.response?.data?.message || "Failed to load reviews.")
       }
       try {
-        setBlockedDates(await getBlockedDates(id));
+        setBlockedDates(await getBlockedDates(id))
       } catch (err) {
-        setError(err?.response?.data?.message || "Failed to load blocked dates.");
+        setError(err?.response?.data?.message || "Failed to load blocked dates.")
       }
     }
-    loadPage();
-  }, [id]);
+    loadPage()
+  }, [id])
 
   async function handleDelete() {
-    if (!window.confirm("Are you sure you want to delete this venue?")) return;
+    if (!window.confirm("Are you sure you want to delete this venue?")) return
     try {
-      await deleteVenue(id);
-      navigate("/venues");
+      await deleteVenue(id)
+      navigate("/venues")
     } catch (err) {
-      setError(err?.response?.data?.message || "Failed to delete venue.");
+      setError(err?.response?.data?.message || "Failed to delete venue.")
     }
   }
 
   async function handleDeleteBlockedDate(blockedId) {
-    if (!window.confirm("Unblock this date?")) return;
+    if (!window.confirm("Unblock this date?")) return
     try {
-      await deleteBlockedDate(id, blockedId);
-      setBlockedDates(blockedDates.filter((one) => one._id !== blockedId));
+      await deleteBlockedDate(id, blockedId)
+      setBlockedDates(blockedDates.filter((one) => one._id !== blockedId))
     } catch (err) {
-      setError(err?.response?.data?.message || "Failed to delete blocked date.");
+      setError(err?.response?.data?.message || "Failed to delete blocked date.")
     }
   }
 
   async function handleReviewSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      setReviewError("");
+      setReviewError("")
       const created = await createReview(id, {
         rating: Number(reviewFormData.rating),
         comment: reviewFormData.comment,
-      });
-      setReviews([...reviews, created]);
-      setReviewFormData({ rating: "", comment: "" });
+      })
+      setReviews([...reviews, created])
+      setReviewFormData({ rating: "", comment: "" })
     } catch (err) {
-      setReviewError(err?.response?.data?.message || "Failed to add review.");
+      setReviewError(err?.response?.data?.message || "Failed to add review.")
     }
   }
 
   async function handleDeleteReview(reviewId) {
-    if (!window.confirm("Delete your review?")) return;
+    if (!window.confirm("Delete your review?")) return
     try {
-      setReviewError("");
-      await deleteReview(id, reviewId);
-      setReviews(reviews.filter((one) => one._id !== reviewId));
+      setReviewError("")
+      await deleteReview(id, reviewId)
+      setReviews(reviews.filter((one) => one._id !== reviewId))
     } catch (err) {
-      setReviewError(err?.response?.data?.message || "Failed to delete review.");
+      setReviewError(err?.response?.data?.message || "Failed to delete review.")
     }
   }
 
   if (error && !venue) {
-    return <p className="error">{error}</p>;
+    return <p className="error">{error}</p>
   }
 
   if (!venue) {
-    return <p>Loading...</p>;
+    return <p>Loading...</p>
   }
 
-  // the venue owner (or an admin) can edit and delete this venue and block dates on it
-  const canManage = user && (venue.owner === user._id || user.role === "admin");
-  // customers and owners can book
-  const canBook = user && (user.role === "customer" || user.role === "owner");
+  const canManage = user && (venue.owner === user._id || user.role === "admin")
+  const canBook = user && (user.role === "customer" || user.role === "owner")
 
   return (
     <main>
@@ -210,7 +207,6 @@ function VenueDetailsPage({ user }) {
                 {"★".repeat(one.rating)}{"☆".repeat(5 - one.rating)}
               </p>
               <p>{one.comment}</p>
-              {/* only the person who wrote the review can delete it */}
               {user && one.customer === user._id && (
                 <div className="actions">
                   <button className="btn-danger" onClick={() => handleDeleteReview(one._id)}>Delete Review</button>
@@ -254,7 +250,7 @@ function VenueDetailsPage({ user }) {
       </section>
 
     </main>
-  );
+  )
 }
 
-export default VenueDetailsPage;
+export default VenueDetailsPage

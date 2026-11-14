@@ -1,18 +1,14 @@
-/* Global styles: colors, fonts, page layout, buttons, footer */
-/* The look is a modern majlis: sadu red, coffee brown and warm cream */
-
-/* Change the colors here and the whole site updates */
 :root {
-  --cream: #f6ecdd;        /* page background, like a majlis wall */
-  --cream-deep: #eddcc4;   /* darker cream for sections */
-  --surface: #fffaf2;      /* cards and forms */
-  --ink: #2a1611;          /* dark coffee: main text and navbar */
-  --brown: #5c3120;        /* headings and outlines */
-  --muted: #7a5546;        /* labels and small text */
-  --red: #9b1c23;          /* sadu red: main buttons */
-  --red-dark: #7a1219;     /* button hover */
-  --gold: #c08a3e;         /* small thread accents */
-  --border: #e3d0b8;       /* lines around cards and inputs */
+  --cream: #f6ecdd;
+  --cream-deep: #eddcc4;
+  --surface: #fffaf2;
+  --ink: #2a1611;
+  --brown: #5c3120;
+  --muted: #7a5546;
+  --red: #9b1c23;
+  --red-dark: #7a1219;
+  --gold: #c08a3e;
+  --border: #e3d0b8;
   --white: #fffdf8;
   --black: #1c1210;
 
@@ -24,12 +20,8 @@
   --font-heading: 'El Messiri', 'Tajawal', serif;
   --font-body: 'Tajawal', system-ui, sans-serif;
 
-  /* Sadu weaving patterns, drawn as small SVG tiles that repeat */
-  /* wide band: stripes with white and black diamonds on red */
   --sadu-band: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' fill='%239b1c23'/%3E%3Crect width='28' height='3' fill='%231c1210'/%3E%3Crect y='3' width='28' height='2' fill='%23fffdf8'/%3E%3Crect y='23' width='28' height='2' fill='%23fffdf8'/%3E%3Crect y='25' width='28' height='3' fill='%231c1210'/%3E%3Cpath d='M14 7l7 7-7 7-7-7z' fill='%23fffdf8'/%3E%3Cpath d='M14 10.5l3.5 3.5-3.5 3.5-3.5-3.5z' fill='%231c1210'/%3E%3Cpath d='M0 9.5l4.5 4.5L0 18.5zM28 9.5L23.5 14l4.5 4.5z' fill='%231c1210'/%3E%3C/svg%3E");
-  /* thin band: a row of white triangles on red */
   --sadu-teeth: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8'%3E%3Crect width='16' height='8' fill='%239b1c23'/%3E%3Cpath d='M0 8l8-8 8 8z' fill='%23fffdf8'/%3E%3Cpath d='M4.5 8L8 4.5 11.5 8z' fill='%231c1210'/%3E%3C/svg%3E");
-  /* very light woven diamonds for backgrounds */
   --sadu-weave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cpath d='M22 2l20 20-20 20L2 22z' fill='none' stroke='%235c3120' stroke-opacity='.05' stroke-width='1.5'/%3E%3Cpath d='M22 16l6 6-6 6-6-6z' fill='%239b1c23' fill-opacity='.04'/%3E%3C/svg%3E");
 }
 
@@ -52,14 +44,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* The whole app: navbar on top, page in the middle, footer at the bottom */
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Every page sits inside this box (see App.jsx) */
 .container {
   flex: 1;
   width: 100%;
@@ -68,8 +58,7 @@ body {
   padding: 40px 20px 64px;
 }
 
-/* Pages fade in softly when they open */
-.container > * {
+.container>* {
   animation: rise 0.35s ease-out both;
 }
 
@@ -78,13 +67,13 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* Headings */
 h1,
 h2,
 h3 {
@@ -101,7 +90,6 @@ h1 {
   margin-bottom: 24px;
 }
 
-/* a short red and gold thread under every page title */
 .container h1::after {
   content: '';
   display: block;
@@ -141,7 +129,6 @@ a:hover {
   color: var(--muted);
 }
 
-/* Small text above a title */
 .eyebrow {
   display: inline-block;
   margin-bottom: 14px;
@@ -150,13 +137,10 @@ a:hover {
   letter-spacing: 0.04em;
 }
 
-/* Keyboard users can always see where they are */
 :focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 2px;
 }
-
-/* ---------- Buttons ---------- */
 
 button,
 .btn {
@@ -197,12 +181,10 @@ button:disabled {
   transform: none;
 }
 
-/* two buttons next to each other get a little space */
-button + button {
+button+button {
   margin-left: 10px;
 }
 
-/* outlined brown button, for Cancel and Back */
 .btn-secondary,
 .actions a:not(.btn) {
   display: inline-flex;
@@ -226,7 +208,6 @@ button + button {
   color: var(--white);
 }
 
-/* outlined red button, for Delete */
 .btn-danger {
   background-color: transparent;
   color: var(--red);
@@ -237,7 +218,6 @@ button + button {
   color: var(--white);
 }
 
-/* cream button, used on dark and red backgrounds */
 .btn-light {
   background-color: var(--white);
   border-color: var(--white);
@@ -250,7 +230,6 @@ button + button {
   color: var(--red-dark);
 }
 
-/* A row of buttons and links, like Edit / Delete / Back */
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -259,11 +238,9 @@ button + button {
   margin-top: 24px;
 }
 
-.actions button + button {
+.actions button+button {
   margin-left: 0;
 }
-
-/* ---------- Messages ---------- */
 
 .error {
   padding: 12px 16px;
@@ -275,20 +252,15 @@ button + button {
   font-weight: 700;
 }
 
-/* an empty error takes no space */
 .error:empty {
   display: none;
 }
-
-/* ---------- Sadu bands ---------- */
 
 .sadu-band {
   height: 20px;
   background-image: var(--sadu-band);
   background-size: 20px 20px;
 }
-
-/* ---------- Footer ---------- */
 
 .footer {
   background-color: var(--ink);
@@ -323,20 +295,16 @@ button + button {
   font-size: 0.95rem;
 }
 
-/* ---------- Phones ---------- */
-
 @media (max-width: 600px) {
   .container {
     padding: 28px 16px 48px;
   }
 
-  /* buttons in a row become full width, easier to tap */
-  .actions > * {
+  .actions>* {
     flex: 1 1 100%;
   }
 }
 
-/* People who turned off animations get no movement */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

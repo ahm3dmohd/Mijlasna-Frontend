@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { signUp } from "../services/authService";
-import PasswordFields from "../components/PasswordFields";
+import { useState } from "react"
+import { Link, useNavigate } from "react-router"
+import { signUp } from "../services/authService"
+import PasswordFields from "../components/PasswordFields"
 
 function Signup() {
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const navigate = useNavigate()
+  const [error, setError] = useState("")
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -13,37 +13,37 @@ function Signup() {
     password: "",
     passwordConf: "",
     role: "customer",
-  });
-  const [ submitting, setSubmitting ] = useState(false)
+  })
+  const [submitting, setSubmitting] = useState(false)
 
-  const { username, email, phone, password, passwordConf, role } = formData;
+  const { username, email, phone, password, passwordConf, role } = formData
 
-  function handleChange(event){
-    setError("");
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+  function handleChange(event) {
+    setError("")
+    setFormData({ ...formData, [event.target.name]: event.target.value })
 
   }
 
 
-  async function handleSubmit(event){
-    event.preventDefault();
+  async function handleSubmit(event) {
+    event.preventDefault()
     if (password !== passwordConf) {
-      setError("Passwords do not match.");
-      return;
+      setError("Passwords do not match.")
+      return
     }
     try {
       setSubmitting(true)
-      await signUp(formData);
+      await signUp(formData)
       navigate('/sign-in')
     } catch (err) {
-      setError(err?.response?.data?.message || "Sign up failed. Please try again.");
+      setError(err?.response?.data?.message || "Sign up failed. Please try again.")
       setSubmitting(false)
     }
   }
 
-  function isFormInvalid(){
-    return !(username && email && phone && password && password === passwordConf);
-  };
+  function isFormInvalid() {
+    return !(username && email && phone && password && password === passwordConf)
+  }
 
   return (
     <main className="auth">
@@ -103,6 +103,6 @@ function Signup() {
       </form>
       <p className="auth-note">Already have an account? <Link to="/sign-in">Sign in</Link></p>
     </main>
-  );
+  )
 }
-export default Signup;
+export default Signup
